@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">cRoin</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Menu items -->
     <string name="action_settings">Settings</string>
@@ -10,6 +8,7 @@
     <string name="title_calculations">Calculations</string>
     <string name="title_currency">Currency</string>
     <string name="title_historical">History</string>
+    <string name="title_identifier">Recognition</string>
     <string name="title_language">Language</string>
 
     <!-- Splash Screen -->
@@ -21,5 +20,10 @@
     <string name="font_awesome_calculator_icon">&#xf1ec;</string>
     <string name="font_awesome_currency_icon">&#xf0d6;</string>
     <string name="font_awesome_language_icon">&#xf57c;</string>
+    <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_currency">CurrencyActivity</string>
+    <string name="title_activity_language">LanguageActivity</string>
+    <string name="title_activity_calculator">CalculatorActivity</string>
+    <string name="title_activity_identify">IdentifyActivity</string>
 
 </resources>
