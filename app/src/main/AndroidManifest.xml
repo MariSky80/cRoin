@@ -28,23 +28,6 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" />
-        <activity android:name=".IdenfityActivity" />
-        <activity
-            android:name=".CalculatorActivity"
-            android:label="@string/title_activity_calculator"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".LanguageActivity"
-            android:label="@string/title_activity_language"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".CurrencyActivity"
-            android:label="@string/title_activity_currency"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".HistoryActivity"
-            android:label="@string/title_activity_history"
-            android:theme="@style/AppTheme" />
         <activity
             android:name=".IdentifyActivity"
             android:label="@string/title_activity_identify"
