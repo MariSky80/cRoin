@@ -17,10 +17,10 @@
 
         <ImageView
             android:id="@+id/imageViewIdentifier"
-            android:layout_width="125dp"
-            android:layout_height="118dp"
+            android:layout_width="208dp"
+            android:layout_height="188dp"
             android:contentDescription="@string/identify_button_description"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/ic_launcher_foreground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
