@@ -24,4 +24,7 @@
     <string name="title_activity_identify">IdentifyActivity</string>
 
 
+    <!-- Permissons -->
+    <string name="permission_denied">Permission denied</string>
+
 </resources>
