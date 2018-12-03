@@ -58,6 +58,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 }
             }
         }
+//        val intentIdentifier = Intent(activity, IdentifyActivity::class.java)
+//        startActivity(intentIdentifier)
     }
 
     private fun openCamera() {
