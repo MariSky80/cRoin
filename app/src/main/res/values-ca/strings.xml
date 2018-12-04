@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">cRoin</string>
+
+
+    <!-- Menu items -->
+    <string name="action_settings">Configuració</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_calculations">Càlculs</string>
+    <string name="title_currency">Moneda</string>
+    <string name="title_historical">Històric</string>
+    <string name="title_home">Home</string>
+    <string name="title_identifier">Reconéixement</string>
+    <string name="title_language">Idioma</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_description">Splash cRoin logo</string>
+
+    <!-- FRAGMENTS -->
+    <!-- Home fragment -->
+    <string name="identify_button_description">Ves a identificació</string>
+    <string name="start_identifcation">Feu clic per començar!</string>
+
+    <!-- ACTIVITIES -->
+    <!-- Ifentify Activity -->
+    <string name="title_activity_identify">IdentifyActivity</string>
+
+
+    <!-- Permissons -->
+    <string name="permission_denied">Accés denegat</string>
+
+</resources>

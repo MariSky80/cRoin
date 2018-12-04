@@ -1,5 +1,7 @@
 package com.croin.croin
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -16,7 +18,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
-import kotlinx.android.synthetic.main.content_identify.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -34,6 +35,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         val viewHome: View = inflater!!.inflate(R.layout.fragment_home, container, false)
         val ibIdentifier: ImageButton = viewHome.findViewById(R.id.ibIdentifier)
+
+        ibIdentifier.layoutParams.height = 500
+        ibIdentifier.layoutParams.width = 500
+
+
+        animateIdentifyButton(ibIdentifier)
+
         ibIdentifier.setOnClickListener(this)
 
         return viewHome
@@ -41,6 +49,18 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     }
 
+
+    fun animateIdentifyButton(ib: ImageButton?) {
+        // arcTo() and PathInterpolator only available on API 21+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val identifyAnimatorSet = AnimatorInflater.loadAnimator(activity, R.animator.identify_button_effects) as AnimatorSet
+            identifyAnimatorSet.setTarget(ib)
+            identifyAnimatorSet.start()
+
+        } else {
+            //No animation
+        }
+    }
 
     override fun onClick(v: View?) {
         when (v) {

@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         val bottomNavigationView = navigation as BottomNavigationView
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView)
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="together">
+
+    <!-- Blink -->
+    <!--<objectAnimator-->
+        <!--android:propertyName="alpha"-->
+        <!--android:duration="1000"-->
+        <!--android:startOffset="1500"-->
+        <!--android:repeatCount="2"-->
+        <!--android:repeatMode="reverse"-->
+        <!--android:interpolator="@android:interpolator/linear"-->
+        <!--android:valueFrom="1.0"-->
+        <!--android:valueTo="0.0"-->
+        <!--android:valueType="floatType"/>-->
+
+    <!-- Scale XY -->
+    <objectAnimator android:propertyName="scaleX"
+        android:startOffset="1"
+        android:duration="1000"
+        android:valueFrom="1"
+        android:valueTo="1.25"
+        android:valueType="floatType"
+        android:repeatMode="reverse"
+        android:repeatCount="3"/>
+    <objectAnimator android:propertyName="scaleY"
+        android:startOffset="1"
+        android:duration="1000"
+        android:valueFrom="1"
+        android:valueTo="1.25"
+        android:valueType="floatType"
+        android:repeatMode="reverse"
+        android:repeatCount="3"/>
+
+
+</set>
