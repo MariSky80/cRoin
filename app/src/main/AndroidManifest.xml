@@ -11,8 +11,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-feature android:name="android.view.SurfaceView" />
+    <!-- INTERNET PERMISSION -->
+    <uses-permission android:name="android.permission.INTERNET"/>
 
+    <uses-feature android:name="android.view.SurfaceView" />
 
     <application
         android:allowBackup="true"

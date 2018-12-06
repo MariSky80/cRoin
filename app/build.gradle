@@ -32,7 +32,22 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    //EXPRESSO
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //TENSORFLOW
     implementation 'org.tensorflow:tensorflow-android:+'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1'
+    //RETROFIT
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+    //COROUTINES
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0'
+    //Logging Network Calls
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    //SQLite
+    implementation "org.jetbrains.anko:anko:$anko_version"
+
+
 }
