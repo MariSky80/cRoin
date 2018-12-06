@@ -20,6 +20,15 @@
     <string name="identify_button_description">Go to currency identification</string>
     <string name="start_identifcation">Click me to start!</string>
 
+    <!-- Language fragment -->
+    <string name="spinner_title">Select language</string>
+    <string name="spinner_description">Select your language</string>
+    <string name="switch_title">System language</string>
+    <string name="switch_description">Select your system language</string>
+    <string name="catalan">Catalan</string>
+    <string name="english">Engish</string>
+    <string name="spanish">Spanish</string>
+
     <!-- ACTIVITIES -->
     <!-- Ifentify Activity -->
     <string name="title_activity_identify">IdentifyActivity</string>

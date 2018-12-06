@@ -1,3 +1,5 @@
+package com.croin.croin.helpers
+
 /**
  * Created by MariSky on 24/11/18.
  */
@@ -8,8 +10,13 @@ import android.support.design.internal.BottomNavigationMenuView
 import android.support.design.widget.BottomNavigationView
 import android.util.Log
 
-//https://stackoverflow.com/questions/41649494/how-to-remove-icon-animation-for-bottom-navigation-view-in-android
 
+/**
+ * Object helper to disable some bottom menu effects.
+ *
+ * https://stackoverflow.com/questions/41649494/how-to-remove-icon-animation-for-bottom-navigation-view-in-android
+ *
+ */
 object BottomNavigationViewHelper {
     @SuppressLint("RestrictedApi")
     fun disableShiftMode(view: BottomNavigationView) {

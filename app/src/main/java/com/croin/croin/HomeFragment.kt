@@ -22,7 +22,10 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 
 /**
- * A simple [Fragment] subclass.
+ * @author Maricel Bros Maimó
+ *
+ * HomeFragment subclass.
+ *
  */
 class HomeFragment : Fragment(), View.OnClickListener {
 
@@ -30,6 +33,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private val REQUEST_GALLERY_CAMERA = 54654
 
 
+    /**
+     * Overrides onCreateView default function from fragment behaviour.
+     *
+     */
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -49,8 +56,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     }
 
-
-    fun animateIdentifyButton(ib: ImageButton?) {
+    private fun animateIdentifyButton(ib: ImageButton?) {
         // arcTo() and PathInterpolator only available on API 21+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val identifyAnimatorSet = AnimatorInflater.loadAnimator(activity, R.animator.identify_button_effects) as AnimatorSet
@@ -116,7 +122,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun Intent.addExtra(key: String, value: Any?) {
+    private fun Intent.addExtra(key: String, value: Any?) {
         when (value) {
             is Long -> putExtra(key, value)
             is String -> putExtra(key, value)

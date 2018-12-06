@@ -22,9 +22,4 @@
         android:icon="@drawable/ic_currency_solid"
         android:title="@string/title_currency" />
 
-    <item
-        android:id="@+id/navigation_language"
-        android:icon="@drawable/ic_language_solid"
-        android:title="@string/title_language" />
-
 </menu>
