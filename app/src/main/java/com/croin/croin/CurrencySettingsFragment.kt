@@ -7,15 +7,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
 import com.croin.croin.data.AppDatabase
 import com.croin.croin.data.dao.CurrencyDao
 import com.croin.croin.network.CurrencyMoshi
+import kotlinx.android.synthetic.main.fragment_currency.*
 import com.croin.croin.utilities.CURRENCY_DATA_FILENAME
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.io.IOException
-
 
 /**
  * @author Maricel Bros Maimó
@@ -23,16 +24,45 @@ import java.io.IOException
  * CurrencySettingsFragment subclass.
  *
  */
-class CurrencySettingsFragment : Fragment() {
+class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSelectedListener  {
 
     private var db: AppDatabase? = null
     private var currencyDao: CurrencyDao? = null
+    private var spContent: ArrayList<CurrencyMoshi> = arrayListOf()
+    private var selectedCurrency: CurrencyMoshi? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val viewCurrency = inflater!!.inflate(R.layout.fragment_currency, container, false)
+        val viewCurrency: View = inflater!!.inflate(R.layout.fragment_currency, container, false)
 
+        // Image button Add Currency
+        val ibAddCurrency: ImageButton = viewCurrency.findViewById(R.id.ibAddCurrency)
+
+        ibAddCurrency.minimumHeight = 32
+        ibAddCurrency.minimumWidth = 28
+
+        ibAddCurrency.setOnClickListener(this)
+
+
+        val spCurrencies: Spinner = viewCurrency.findViewById(R.id.spCurrencies)
+        spContent = getCurrenciesFromJSon()
+
+        if (spContent != null) {
+            val aCurrencies = ArrayAdapter(activity, android.R.layout.simple_spinner_dropdown_item, spContent)
+            aCurrencies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spCurrencies.adapter = aCurrencies
+        }
+
+        spCurrencies!!.setOnItemSelectedListener(this)
+
+        return viewCurrency
+    }
+
+
+    private fun getCurrenciesFromJSon(): ArrayList<CurrencyMoshi> {
+
+        val al: ArrayList<CurrencyMoshi> = arrayListOf()
 
         val jsonResponse = context.applicationContext.assets.open(CURRENCY_DATA_FILENAME).bufferedReader().use{
             it.readText()
@@ -46,19 +76,34 @@ class CurrencySettingsFragment : Fragment() {
 
         try {
             val currencies = jsonAdapter.fromJson(jsonResponse)
-            Log.d("Size", "$currencies!!.size size")
-
             for (i in currencies!!.indices) {
-                Log.d("Person", currencies.get(i).toString())
+                al.add(currencies[i])
             }
 
-
         } catch (e: IOException) {
-            e.printStackTrace()
+            //e.printStackTrace()
         }
+        return al
+    }
 
 
-        return viewCurrency
+    override fun onClick(v: View?) {
+        when (v) {
+            ibAddCurrency -> {
+                println("ey!")
+            }
+        }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+        selectedCurrency = parent.selectedItem as CurrencyMoshi
+
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Nothing to do here.
     }
 
 

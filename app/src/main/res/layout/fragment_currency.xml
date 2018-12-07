@@ -6,21 +6,66 @@
     android:layout_height="match_parent"
     tools:context="com.croin.croin.CurrencySettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="75dp"
+            android:contentDescription="@string/spinner_description"
+            android:text="@string/add_title"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Currency"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
+
+        <ImageButton
+            android:id="@+id/ibAddCurrency"
+            style="@style/Widget.AppCompat.ImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="115dp"
+            android:background="@null"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="@string/add_currency_button_description"
+            android:elevation="0dp"
+            android:src="@drawable/ic_plus_solid"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.951"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
+
+        <Spinner
+            android:id="@+id/spCurrencies"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="110dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toStartOf="@+id/ibAddCurrency"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent" />
+
+
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

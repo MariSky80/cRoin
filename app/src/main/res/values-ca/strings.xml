@@ -20,14 +20,11 @@
     <string name="identify_button_description">Ves a identificació</string>
     <string name="start_identifcation">Feu clic per començar!</string>
 
-    <!-- Language fragment -->
-    <string name="spinner_title">Selecciona un idioma</string>
-    <string name="spinner_description">Selecciona tu idioma</string>
-    <string name="switch_title">Idioma del sistema</string>
-    <string name="switch_description">Selecciona l\'idioma del sistema</string>
-    <string name="catalan">Català</string>
-    <string name="english">Anglès</string>
-    <string name="spanish">Castellà</string>
+    <!-- Currency fragment -->
+    <string name="add_currency_button_description">Clica per afegir una divisa nova</string>
+    <string name="add_title">Afegir Divisa</string>
+    <string name="spinner_title">Afegir Divisa</string>
+    <string name="spinner_description">Afegeix nova divisa</string>
 
     <!-- ACTIVITIES -->
     <!-- Ifentify Activity -->
