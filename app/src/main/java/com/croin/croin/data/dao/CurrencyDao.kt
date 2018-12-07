@@ -18,6 +18,10 @@ interface CurrencyDao {
     @Query("SELECT * FROM currencies WHERE iso == :iso")
     fun getCurrencyByIso(iso: String): List<Currency>
 
+    @Query("SELECT * FROM currencies WHERE preferred LIMIT 1")
+    fun getCurrencyByPreferred(): Currency
+
     @Query("SELECT * FROM currencies")
     fun getCurrencies(): List<Currency>
+
 }

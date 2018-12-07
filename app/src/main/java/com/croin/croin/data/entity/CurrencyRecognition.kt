@@ -14,7 +14,7 @@ import android.arch.persistence.room.PrimaryKey
                             childColumns = ["id"])]
 )
 
-data class CurrencyRecogniton(
+data class CurrencyRecognition(
         @PrimaryKey(autoGenerate = true)
         val id: Int? = null,
         val value: Float

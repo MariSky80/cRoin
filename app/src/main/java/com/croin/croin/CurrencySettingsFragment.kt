@@ -3,16 +3,18 @@ package com.croin.croin
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.croin.croin.data.AppDatabase
-import com.croin.croin.data.dao.CurrencyAddedDao
 import com.croin.croin.data.dao.CurrencyDao
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-
+import com.croin.croin.network.CurrencyMoshi
+import com.croin.croin.utilities.CURRENCY_DATA_FILENAME
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import java.io.IOException
 
 
 /**
@@ -23,11 +25,8 @@ import io.reactivex.schedulers.Schedulers
  */
 class CurrencySettingsFragment : Fragment() {
 
-    private val URLCURRENCYCONVERTER = "https://free.currencyconverterapi.com/api/v6/"
-
     private var db: AppDatabase? = null
     private var currencyDao: CurrencyDao? = null
-    private var currencyAddedDao: CurrencyAddedDao? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -35,8 +34,44 @@ class CurrencySettingsFragment : Fragment() {
         val viewCurrency = inflater!!.inflate(R.layout.fragment_currency, container, false)
 
 
-        Observable.fromCallable({
-            db = AppDatabase.getAppDataBase(context = this@CurrencySettingsFragment.context)
+        val jsonResponse = context.applicationContext.assets.open(CURRENCY_DATA_FILENAME).bufferedReader().use{
+            it.readText()
+        }
+
+        val mCurrencyMoshi = Moshi.Builder().build()
+
+        val type = Types.newParameterizedType(List::class.java, CurrencyMoshi::class.java)
+        val jsonAdapter: JsonAdapter<List<CurrencyMoshi>> = mCurrencyMoshi.adapter(type)
+
+
+        try {
+            val currencies = jsonAdapter.fromJson(jsonResponse)
+            Log.d("Size", "$currencies!!.size size")
+
+            for (i in currencies!!.indices) {
+                Log.d("Person", currencies.get(i).toString())
+            }
+
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+
+        return viewCurrency
+    }
+
+
+}// Required empty public constructor
+
+
+/*
+* DATABASE READER
+*
+* Observable.fromCallable({
+
+            db = AppDatabase.getInstance(context = this@CurrencySettingsFragment.context)
+
             currencyDao = db?.currencyDao()
 
             db?.currencyDao()?.getCurrencies()
@@ -49,12 +84,7 @@ class CurrencySettingsFragment : Fragment() {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
-
-
-        return viewCurrency
-    }
-
-}// Required empty public constructor
+* */
 
 
 /*
@@ -73,7 +103,7 @@ Get exchange!
 
 
         val serviceCurrencies = Retrofit.Builder()
-                .baseUrl("https://free.currencyconverterapi.com/api/v6/")
+                .baseUrl(URL_CURRENCY_CONVERTER)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 //.client(client)

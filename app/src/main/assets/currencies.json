@@ -1,0 +1,776 @@
+[
+	{
+		"name": "Albanian Lek",
+		"symbol": "Lek",
+		"iso": "ALL"
+	},
+	{
+		"name": "East Caribbean Dollar",
+		"symbol": "$",
+		"iso": "XCD"
+	},
+	{
+		"name": "Euro",
+		"symbol": "€",
+		"iso": "EUR"
+	},
+	{
+		"name": "Barbadian Dollar",
+		"symbol": "$",
+		"iso": "BBD"
+	},
+	{
+		"name": "Bhutanese Ngultrum",
+		"symbol": "",
+		"iso": "BTN"
+	},
+  {
+		"name": "Brunei Dollar",
+		"symbol": "$",
+		"iso": "BND"
+	},
+	{
+		"name": "Central African CFA Franc",
+		"symbol": "",
+		"iso": "XAF"
+	},
+	{
+		"name": "Cuban Peso",
+		"symbol": "$",
+		"iso": "CUP"
+	},
+	{
+		"name": "United States Dollar",
+		"symbol": "$",
+		"iso": "USD"
+	},
+	{
+		"name": "Falkland Islands Pound",
+		"symbol": "£",
+		"iso": "FKP"
+	},
+	{
+		"name": "Gibraltar Pound",
+		"symbol": "£",
+		"iso": "GIP"
+	},
+	{
+		"name": "Hungarian Forint",
+		"symbol": "Ft",
+		"iso": "HUF"
+	},
+	{
+		"name": "Iranian Rial",
+		"symbol": "﷼",
+		"iso": "IRR"
+	},
+	{
+		"name": "Jamaican Dollar",
+		"symbol": "J$",
+		"iso": "JMD"
+	},
+	{
+		"name": "Australian Dollar",
+		"symbol": "$",
+		"iso": "AUD"
+	},
+	{
+		"name": "Lao Kip",
+		"symbol": "₭",
+		"iso": "LAK"
+	},
+	{
+		"name": "Libyan Dinar",
+		"symbol": "",
+		"iso": "LYD"
+	},
+	{
+		"name": "Macedonian Denar",
+		"symbol": "ден",
+		"iso": "MKD"
+	},
+	{
+		"name": "West African CFA Franc",
+		"symbol": "",
+		"iso": "XOF"
+	},
+	{
+		"name": "New Zealand Dollar",
+		"symbol": "$",
+		"iso": "NZD"
+	},
+	{
+		"name": "Omani Rial",
+		"symbol": "﷼",
+		"iso": "OMR"
+	},
+	{
+		"name": "Papua New Guinean Kina",
+		"symbol": "",
+		"iso": "PGK"
+	},
+	{
+		"name": "Rwandan Franc",
+		"symbol": "",
+		"iso": "RWF"
+	},
+	{
+		"name": "Samoan Tala",
+		"symbol": "",
+		"iso": "WST"
+	},
+	{
+		"name": "Serbian Dinar",
+		"symbol": "Дин.",
+		"iso": "RSD"
+	},
+	{
+		"name": "Swedish Krona",
+		"symbol": "kr",
+		"iso": "SEK"
+	},
+	{
+		"name": "Tanzanian Shilling",
+		"symbol": "TSh",
+		"iso": "TZS"
+	},
+	{
+		"name": "Armenian Dram",
+		"symbol": "",
+		"iso": "AMD"
+	},
+	{
+		"name": "Bahamian Dollar",
+		"symbol": "$",
+		"iso": "BSD"
+	},
+	{
+		"name": "Bosnia And Herzegovina Konvertibilna Marka",
+		"symbol": "KM",
+		"iso": "BAM"
+	},
+	{
+		"name": "Cape Verdean Escudo",
+		"symbol": "",
+		"iso": "CVE"
+	},
+	{
+		"name": "Chinese Yuan",
+		"symbol": "¥",
+		"iso": "CNY"
+	},
+	{
+		"name": "Costa Rican Colon",
+		"symbol": "₡",
+		"iso": "CRC"
+	},
+	{
+		"name": "Czech Koruna",
+		"symbol": "Kč",
+		"iso": "CZK"
+	},
+	{
+		"name": "Eritrean Nakfa",
+		"symbol": "",
+		"iso": "ERN"
+	},
+	{
+		"name": "Georgian Lari",
+		"symbol": "",
+		"iso": "GEL"
+	},
+	{
+		"name": "Haitian Gourde",
+		"symbol": "",
+		"iso": "HTG"
+	},
+	{
+		"name": "Indian Rupee",
+		"symbol": "₹",
+		"iso": "INR"
+	},
+	{
+		"name": "Jordanian Dinar",
+		"symbol": "",
+		"iso": "JOD"
+	},
+	{
+		"name": "South Korean Won",
+		"symbol": "₩",
+		"iso": "KRW"
+	},
+	{
+		"name": "Lebanese Lira",
+		"symbol": "£",
+		"iso": "LBP"
+	},
+	{
+		"name": "Malawian Kwacha",
+		"symbol": "",
+		"iso": "MWK"
+	},
+	{
+		"name": "Mauritanian Ouguiya",
+		"symbol": "",
+		"iso": "MRO"
+	},
+	{
+		"name": "Mozambican Metical",
+		"symbol": "",
+		"iso": "MZN"
+	},
+	{
+		"name": "Netherlands Antillean Gulden",
+		"symbol": "ƒ",
+		"iso": "ANG"
+	},
+	{
+		"name": "Peruvian Nuevo Sol",
+		"symbol": "S/.",
+		"iso": "PEN"
+	},
+	{
+		"name": "Qatari Riyal",
+		"symbol": "﷼",
+		"iso": "QAR"
+	},
+	{
+		"name": "Sao Tome And Principe Dobra",
+		"symbol": "",
+		"iso": "STD"
+	},
+	{
+		"name": "Sierra Leonean Leone",
+		"symbol": "",
+		"iso": "SLL"
+	},
+	{
+		"name": "Somali Shilling",
+		"symbol": "S",
+		"iso": "SOS"
+	},
+	{
+		"name": "Sudanese Pound",
+		"symbol": "",
+		"iso": "SDG"
+	},
+	{
+		"name": "Syrian Pound",
+		"symbol": "£",
+		"iso": "SYP"
+	},
+	{
+		"name": "Angolan Kwanza",
+		"iso": "AOA"
+	},
+	{
+		"name": "Aruban Florin",
+		"symbol": "ƒ",
+		"iso": "AWG"
+	},
+	{
+		"name": "Bahraini Dinar",
+		"symbol": "",
+		"iso": "BHD"
+	},
+	{
+		"name": "Belize Dollar",
+		"symbol": "BZ$",
+		"iso": "BZD"
+	},
+	{
+		"name": "Botswana Pula",
+		"symbol": "P",
+		"iso": "BWP"
+	},
+	{
+		"name": "Burundi Franc",
+		"symbol": "",
+		"iso": "BIF"
+	},
+	{
+		"name": "Cayman Islands Dollar",
+		"symbol": "$",
+		"iso": "KYD"
+	},
+	{
+		"name": "Colombian Peso",
+		"symbol": "$",
+		"iso": "COP"
+	},
+	{
+		"name": "Danish Krone",
+		"symbol": "kr",
+		"iso": "DKK"
+	},
+	{
+		"name": "Guatemalan Quetzal",
+		"symbol": "Q",
+		"iso": "GTQ"
+	},
+	{
+		"name": "Honduran Lempira",
+		"symbol": "L",
+		"iso": "HNL"
+	},
+	{
+		"name": "Indonesian Rupiah",
+		"symbol": "Rp",
+		"iso": "isoR"
+	},
+	{
+		"name": "Israeli New Sheqel",
+		"symbol": "₪",
+		"iso": "ILS"
+	},
+	{
+		"name": "Kazakhstani Tenge",
+		"symbol": "лв",
+		"iso": "KZT"
+	},
+	{
+		"name": "Kuwaiti Dinar",
+		"iso": "KWD"
+	},
+	{
+		"name": "Lesotho Loti",
+		"iso": "LSL"
+	},
+	{
+		"name": "Malaysian Ringgit",
+		"symbol": "RM",
+		"iso": "MYR"
+	},
+	{
+		"name": "Mauritian Rupee",
+		"symbol": "₨",
+		"iso": "MUR"
+	},
+	{
+		"name": "Mongolian Tugrik",
+		"symbol": "₮",
+		"iso": "MNT"
+	},
+	{
+		"name": "Myanma Kyat",
+		"iso": "MMK"
+	},
+	{
+		"name": "Nigerian Naira",
+		"symbol": "₦",
+		"iso": "NGN"
+	},
+	{
+		"name": "Panamanian Balboa",
+		"symbol": "B/.",
+		"iso": "PAB"
+	},
+	{
+		"name": "Philippine Peso",
+		"symbol": "₱",
+		"iso": "PHP"
+	},
+	{
+		"name": "Romanian Leu",
+		"symbol": "lei",
+		"iso": "RON"
+	},
+	{
+		"name": "Saudi Riyal",
+		"symbol": "﷼",
+		"iso": "SAR"
+	},
+	{
+		"name": "Singapore Dollar",
+		"symbol": "$",
+		"iso": "SGD"
+	},
+	{
+		"name": "South African Rand",
+		"symbol": "R",
+		"iso": "ZAR"
+	},
+	{
+		"name": "Surinamese Dollar",
+		"symbol": "$",
+		"iso": "SRD"
+	},
+	{
+		"name": "New Taiwan Dollar",
+		"symbol": "NT$",
+		"iso": "TWD"
+	},
+	{
+		"name": "Paanga",
+		"symbol": "",
+		"iso": "TOP"
+	},
+	{
+		"name": "Venezuelan Bolivar",
+		"symbol": "",
+		"iso": "VEF"
+	},
+	{
+		"name": "Algerian Dinar",
+		"symbol": "",
+		"iso": "DZD"
+	},
+	{
+		"name": "Argentine Peso",
+		"symbol": "$",
+		"iso": "ARS"
+	},
+	{
+		"name": "Azerbaijani Manat",
+		"symbol": "ман",
+		"iso": "AZN"
+	},
+	{
+		"name": "Belarusian Ruble",
+		"symbol": "p.",
+		"iso": "BYR"
+	},
+	{
+		"name": "Bolivian Boliviano",
+		"symbol": "$b",
+		"iso": "BOB"
+	},
+	{
+		"name": "Bulgarian Lev",
+		"symbol": "лв",
+		"iso": "BGN"
+	},
+	{
+		"name": "Canadian Dollar",
+		"symbol": "$",
+		"iso": "CAD"
+	},
+	{
+		"name": "Chilean Peso",
+		"symbol": "$",
+		"iso": "CLP"
+	},
+	{
+		"name": "Congolese Franc",
+		"iso": "CDF"
+	},
+	{
+		"name": "Dominican Peso",
+		"symbol": "RD$",
+		"iso": "DOP"
+	},
+	{
+		"name": "Fijian Dollar",
+		"symbol": "$",
+		"iso": "FJD"
+	},
+	{
+		"name": "Gambian Dalasi",
+		"symbol": "",
+		"iso": "GMD"
+	},
+	{
+		"name": "Guyanese Dollar",
+		"symbol": "$",
+		"iso": "GYD"
+	},
+	{
+		"name": "Icelandic Króna",
+		"symbol": "kr",
+		"iso": "ISK"
+	},
+	{
+		"name": "Iraqi Dinar",
+		"iso": "IQD"
+	},
+	{
+		"name": "Japanese Yen",
+		"symbol": "¥",
+		"iso": "JPY"
+	},
+	{
+		"name": "North Korean Won",
+		"symbol": "₩",
+		"iso": "KPW"
+	},
+	{
+		"name": "Latvian Lats",
+		"symbol": "Ls",
+		"iso": "LVL"
+	},
+	{
+		"name": "Swiss Franc",
+		"symbol": "Fr.",
+		"iso": "CHF"
+	},
+	{
+		"name": "Malagasy Ariary",
+		"symbol": "",
+		"iso": "MGA"
+	},
+	{
+		"name": "Moldovan Leu",
+		"symbol": "",
+		"iso": "MDL"
+	},
+	{
+		"name": "Moroccan Dirham",
+		"symbol": "",
+		"iso": "MAD"
+	},
+	{
+		"name": "Nepalese Rupee",
+		"symbol": "₨",
+		"iso": "NPR"
+	},
+	{
+		"name": "Nicaraguan Cordoba",
+		"symbol": "C$",
+		"iso": "NIO"
+	},
+	{
+		"name": "Pakistani Rupee",
+		"symbol": "₨",
+		"iso": "PKR"
+	},
+	{
+		"name": "Paraguayan Guarani",
+		"symbol": "Gs",
+		"iso": "PYG"
+	},
+	{
+		"name": "Saint Helena Pound",
+		"symbol": "£",
+		"iso": "SHP"
+	},
+	{
+		"name": "Seychellois Rupee",
+		"symbol": "₨",
+		"iso": "SCR"
+	},
+	{
+		"name": "Solomon Islands Dollar",
+		"symbol": "$",
+		"iso": "SBD"
+	},
+	{
+		"name": "Sri Lankan Rupee",
+		"symbol": "₨",
+		"iso": "LKR"
+	},
+	{
+		"name": "Thai Baht",
+		"symbol": "฿",
+		"iso": "THB"
+	},
+	{
+		"name": "Turkish New Lira",
+		"symbol": "",
+		"iso": "TRY"
+	},
+	{
+		"name": "UAE Dirham",
+		"symbol": "",
+		"iso": "AED"
+	},
+	{
+		"name": "Vanuatu Vatu",
+		"symbol": "",
+		"iso": "VUV"
+	},
+	{
+		"name": "Yemeni Rial",
+		"symbol": "﷼",
+		"iso": "YER"
+	},
+	{
+		"name": "Afghan Afghani",
+		"symbol": "؋",
+		"iso": "AFN"
+	},
+	{
+		"name": "Bangladeshi Taka",
+		"symbol": "",
+		"iso": "BDT"
+	},
+	{
+		"name": "Brazilian Real",
+		"symbol": "R$",
+		"iso": "BRL"
+	},
+	{
+		"name": "Cambodian Riel",
+		"symbol": "៛",
+		"iso": "KHR"
+	},
+	{
+		"name": "Comorian Franc",
+		"symbol": "",
+		"iso": "KMF"
+	},
+	{
+		"name": "Croatian Kuna",
+		"symbol": "kn",
+		"iso": "HRK"
+	},
+	{
+		"name": "Djiboutian Franc",
+		"symbol": "",
+		"iso": "DJF"
+	},
+	{
+		"name": "Egyptian Pound",
+		"symbol": "£",
+		"iso": "EGP"
+	},
+	{
+		"name": "Ethiopian Birr",
+		"symbol": "",
+		"iso": "ETB"
+	},
+	{
+		"name": "CFP Franc",
+		"symbol": "",
+		"iso": "XPF"
+	},
+	{
+		"name": "Ghanaian Cedi",
+		"symbol": "",
+		"iso": "GHS"
+	},
+	{
+		"name": "Guinean Franc",
+		"symbol": "",
+		"iso": "GNF"
+	},
+	{
+		"name": "Hong Kong Dollar",
+		"symbol": "$",
+		"iso": "HKD"
+	},
+	{
+		"name": "Special Drawing Rights",
+		"symbol": "",
+		"iso": "XDR"
+	},
+	{
+		"name": "Kenyan Shilling",
+		"symbol": "KSh",
+		"iso": "KES"
+	},
+	{
+		"name": "Kyrgyzstani Som",
+		"symbol": "лв",
+		"iso": "KGS"
+	},
+	{
+		"name": "Liberian Dollar",
+		"symbol": "$",
+		"iso": "LRD"
+	},
+	{
+		"name": "Macanese Pataca",
+		"symbol": "",
+		"iso": "MOP"
+	},
+	{
+		"name": "Maldivian Rufiyaa",
+		"symbol": "",
+		"iso": "MVR"
+	},
+	{
+		"name": "Mexican Peso",
+		"symbol": "$",
+		"iso": "MXN"
+	},
+	{
+		"name": "Namibian Dollar",
+		"symbol": "$",
+		"iso": "NAD"
+	},
+	{
+		"name": "Norwegian Krone",
+		"symbol": "kr",
+		"iso": "NOK"
+	},
+	{
+		"name": "Polish Zloty",
+		"symbol": "zł",
+		"iso": "PLN"
+	},
+	{
+		"name": "Russian Ruble",
+		"symbol": "руб",
+		"iso": "RUB"
+	},
+	{
+		"name": "Swazi Lilangeni",
+		"symbol": "",
+		"iso": "SZL"
+	},
+	{
+		"name": "Tajikistani Somoni",
+		"symbol": "",
+		"iso": "TJS"
+	},
+	{
+		"name": "Trinisoad and Tobago Dollar",
+		"symbol": "TT$",
+		"iso": "TTD"
+	},
+	{
+		"name": "Ugandan Shilling",
+		"symbol": "USh",
+		"iso": "UGX"
+	},
+	{
+		"name": "Uruguayan Peso",
+		"symbol": "$U",
+		"iso": "UYU"
+	},
+	{
+		"name": "Vietnamese Dong",
+		"symbol": "₫",
+		"iso": "VND"
+	},
+	{
+		"name": "Tunisian Dinar",
+		"symbol": "",
+		"iso": "TND"
+	},
+	{
+		"name": "Ukrainian Hryvnia",
+		"symbol": "₴",
+		"iso": "UAH"
+	},
+	{
+		"name": "Uzbekistani Som",
+		"symbol": "лв",
+		"iso": "UZS"
+	},
+	{
+		"name": "Turkmenistan Manat",
+		"symbol": "",
+		"iso": "TMT"
+	},
+	{
+		"name": "British Pound",
+		"symbol": "£",
+		"iso": "GBP"
+	},
+	{
+		"name": "Zambian Kwacha",
+		"symbol": "",
+		"iso": "ZMW"
+	},
+	{
+		"name": "Bitcoin",
+		"symbol": "BTC",
+		"iso": "BTC"
+	},
+	{
+		"name": "New Belarusian Ruble",
+		"symbol": "p.",
+		"iso": "BYN"
+	}
+]

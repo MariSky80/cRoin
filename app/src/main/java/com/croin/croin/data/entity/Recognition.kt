@@ -19,5 +19,4 @@ data class Recognition(
         val createdAt: Date,
         @ColumnInfo(name = "updated_at")
         val updatedAt: Date
-
 )
