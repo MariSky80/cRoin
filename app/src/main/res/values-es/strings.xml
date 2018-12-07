@@ -6,7 +6,7 @@
     <string name="action_settings">Configuración</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_calculations">Cálculos</string>
-    <string name="title_currency">Moneda</string>
+    <string name="title_currency">Divisa</string>
     <string name="title_historical">Histórico</string>
     <string name="title_home">Home</string>
     <string name="title_identifier">Reconocimiento</string>

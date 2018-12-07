@@ -3,11 +3,13 @@ package com.croin.croin
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.croin.croin.adapters.CurrencyAdapter
 import com.croin.croin.data.AppDatabase
 import com.croin.croin.data.dao.CurrencyDao
 import com.croin.croin.network.CurrencyMoshi
@@ -17,6 +19,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.io.IOException
+
 
 /**
  * @author Maricel Bros Maimó
@@ -30,11 +33,15 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
     private var currencyDao: CurrencyDao? = null
     private var spContent: ArrayList<CurrencyMoshi> = arrayListOf()
     private var selectedCurrency: CurrencyMoshi? = null
+    private var rvwCurrency: RecyclerView? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val viewCurrency: View = inflater!!.inflate(R.layout.fragment_currency, container, false)
+
+
+        rvwCurrency = viewCurrency.findViewById(R.id.rvCurrency)
 
         // Image button Add Currency
         val ibAddCurrency: ImageButton = viewCurrency.findViewById(R.id.ibAddCurrency)
@@ -79,11 +86,24 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
             for (i in currencies!!.indices) {
                 al.add(currencies[i])
             }
+            getUserCurrencies(al)
 
         } catch (e: IOException) {
             //e.printStackTrace()
         }
         return al
+    }
+
+    private fun getUserCurrencies(alCurrency: ArrayList<CurrencyMoshi>) {
+        val currencies = mutableListOf<CurrencyMoshi>()
+
+        for (c in alCurrency!!.indices) {
+            currencies.add(alCurrency[c])
+        }
+
+        rvwCurrency!!.layoutManager = LinearLayoutManager(activity)
+        rvwCurrency!!.setHasFixedSize(true)
+        rvwCurrency!!.adapter = CurrencyAdapter(activity, currencies)
     }
 
 
