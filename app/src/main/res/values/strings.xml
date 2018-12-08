@@ -25,11 +25,26 @@
     <string name="add_title">Add Currency</string>
     <string name="spinner_title">Add Currency</string>
     <string name="spinner_description">Add new currency</string>
+    <string name="added_currency_description">Currency added</string>
+    <string name="fav_description">Favourite currency</string>
+    <string name="not_fav_description">Favourite currency</string>
+    <string name="delete_button">Delete currency</string>
+    <string name="dialog_add_title">Add currency</string>
+    <string name="dialog_add_description">Are you sure to add </string>
+    <string name="dialog_delete_title">Delete currency</string>
+    <string name="dialog_delete_description">Are you sure to delete </string>
+    <string name="dialog_fav_title">Favourite</string>
+    <string name="dialog_fav_description">Are you sure to change favourite state from </string>
 
     <!-- ACTIVITIES -->
     <!-- Ifentify Activity -->
     <string name="title_activity_identify">IdentifyActivity</string>
 
+
+    <!-- DIALOG GENERIC -->
+    <string name="dialog_cancel">CANCEL</string>
+    <string name="dialog_no">NO</string>
+    <string name="dialog_yes">SÍ</string>
 
     <!-- Permissons -->
     <string name="permission_denied">Permission denied</string>

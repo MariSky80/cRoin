@@ -25,11 +25,25 @@
     <string name="add_title">Afegir Divisa</string>
     <string name="spinner_title">Afegir Divisa</string>
     <string name="spinner_description">Afegeix nova divisa</string>
+    <string name="added_currency_description">Divisa afegida</string>
+    <string name="fav_description">Divisa preferida</string>
+    <string name="not_fav_description">Divisa no preferida</string>
+    <string name="delete_button">Eliminar divisa</string>
+    <string name="dialog_add_title">Afegir divisa</string>
+    <string name="dialog_add_description">Estàs segur d\'afegir </string>
+    <string name="dialog_delete_title">Eliminar divisa</string>
+    <string name="dialog_delete_description">Estàs segur d\'eliminar </string>
+    <string name="dialog_fav_title">Preferit</string>
+    <string name="dialog_fav_description">Estàs segur de canviar l\'estat de </string>
 
     <!-- ACTIVITIES -->
     <!-- Ifentify Activity -->
     <string name="title_activity_identify">IdentifyActivity</string>
 
+    <!-- DIALOG GENERIC -->
+    <string name="dialog_cancel">CANCEL·LAR</string>
+    <string name="dialog_no">NO</string>
+    <string name="dialog_yes">SÍ</string>
 
     <!-- Permissons -->
     <string name="permission_denied">Accés denegat</string>

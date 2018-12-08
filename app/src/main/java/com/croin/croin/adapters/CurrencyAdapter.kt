@@ -9,16 +9,33 @@ import android.widget.ImageButton
 import android.widget.TextView
 import com.croin.croin.R
 import com.croin.croin.database.entity.Currency
-import kotlinx.android.synthetic.main.activity_splash.view.*
 
-class CurrencyAdapter internal constructor(context: Context) : RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
+class CurrencyAdapter internal constructor(context: Context, listener: OnItemClickListener) : RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
+
+
+    private var listenerDeleteButton: OnItemClickListener = listener
+    interface OnItemClickListener {
+        fun onDeleteClick(currency: Currency)
+        fun onItemClick(currency: Currency)
+    }
+
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var currencies = emptyList<Currency>()
+    private val cContext = context
 
     inner class CurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val currencyItemView: TextView = itemView.findViewById(R.id.tvCurrency)
         val currencyItemFav: ImageButton = itemView.findViewById(R.id.ibFav)
+        private val currencyItemDelete: ImageButton = itemView.findViewById(R.id.ibDelete)
+        fun bind(currency: Currency, listener: OnItemClickListener) {
+            currencyItemDelete.setOnClickListener {
+                listener.onDeleteClick(currency)
+            }
+            currencyItemFav.setOnClickListener{
+                listener.onItemClick(currency)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
@@ -28,14 +45,27 @@ class CurrencyAdapter internal constructor(context: Context) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {
         val current = currencies[position]
+
         when (current.symbol.isNullOrEmpty()) {
             true -> holder.currencyItemView.text = "${current.name} - ${current.id}"
             false -> holder.currencyItemView.text = "${current.name} - ${current.id} (${current.symbol})"
         }
+
         when (current.preferred) {
-            true -> holder.currencyItemFav.setImageResource(R.drawable.ic_star_solid)
-            false -> holder.currencyItemFav.setImageResource(R.drawable.ic_star_regular)
+            true -> {
+                holder.currencyItemFav.setImageResource(R.drawable.ic_star_solid)
+                holder.currencyItemFav.contentDescription = cContext.getString(R.string.fav_description)
+                Unit
+
+            }
+            false -> {
+                holder.currencyItemFav.setImageResource(R.drawable.ic_star_regular)
+                holder.currencyItemFav.contentDescription = cContext.getString(R.string.not_fav_description)
+                Unit
+            }
         }
+
+        holder.bind(current, listenerDeleteButton)
 
     }
 

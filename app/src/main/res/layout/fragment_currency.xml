@@ -77,7 +77,7 @@
             android:id="@+id/dDivider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:background="@color/colorPrimaryDark"
             android:visibility="visible"

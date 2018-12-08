@@ -28,13 +28,27 @@ class CurrencyViewModel(application: Application): AndroidViewModel(application)
     init {
         repository = CurrencyRepository(db.currencyDao())
         allCurrencies = repository.allCurrencies
+
         preferred = Transformations.map(repository.preferred) {
             currency -> currency.preferred
         }
     }
 
+    fun noFavorites() = scope.launch(Dispatchers.IO) {
+        repository.noFavorites()
+    }
+
     fun insert(currency: Currency) = scope.launch(Dispatchers.IO) {
         repository.insert(currency)
     }
+
+    fun delete(currency: Currency) = scope.launch(Dispatchers.IO) {
+        repository.delete(currency)
+    }
+
+    fun update(currency: Currency) = scope.launch(Dispatchers.IO) {
+        repository.updated(currency)
+    }
+
 
 }

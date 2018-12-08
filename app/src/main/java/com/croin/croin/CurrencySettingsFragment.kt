@@ -1,9 +1,6 @@
 package com.croin.croin
 
-
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.Transformations
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -34,7 +31,7 @@ import com.croin.croin.database.entity.Currency
  * CurrencySettingsFragment subclass.
  *
  */
-class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSelectedListener  {
+class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSelectedListener, CurrencyAdapter.OnItemClickListener  {
 
     private var spContent: MutableList<CurrencyData> = arrayListOf()
     private var selectedCurrency: CurrencyData? = null
@@ -43,11 +40,10 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+
         // Inflate the layout for this fragment
         val viewCurrency: View = inflater!!.inflate(R.layout.fragment_currency, container, false)
-
-
-        rvwCurrency = viewCurrency.findViewById(R.id.rvCurrency)
 
         // Image button Add Currency
         val ibAddCurrency: ImageButton = viewCurrency.findViewById(R.id.ibAddCurrency)
@@ -57,21 +53,20 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
 
         ibAddCurrency.setOnClickListener(this)
 
+
         //Currencies spinner
         val spCurrencies: Spinner = viewCurrency.findViewById(R.id.spCurrencies)
         spContent = getCurrenciesFromJSon()
 
-        if (spContent != null) {
-            val aCurrencies = ArrayAdapter(activity, android.R.layout.simple_spinner_dropdown_item, spContent)
-            aCurrencies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spCurrencies.adapter = aCurrencies
-        }
+        val aCurrencies = ArrayAdapter(activity, android.R.layout.simple_spinner_dropdown_item, spContent)
+        aCurrencies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spCurrencies.adapter = aCurrencies
 
-        spCurrencies!!.setOnItemSelectedListener(this)
+        spCurrencies.setOnItemSelectedListener(this)
 
         //RecyclerView currencies list
         val recyclerView = viewCurrency.findViewById<RecyclerView>(R.id.rvCurrency)
-        val adapter = CurrencyAdapter(activity)
+        val adapter = CurrencyAdapter(activity, this@CurrencySettingsFragment)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -82,6 +77,7 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
             // Update the cached copy of the words in the adapter.
             currencies?.let { adapter.setCurrencies(it) }
         })
+
 
         return viewCurrency
     }
@@ -117,61 +113,34 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
         return al
     }
 
-    private fun showDialog(){
-        // Late initialize an alert dialog object
-        lateinit var dialog:AlertDialog
-
-
-        // Initialize a new instance of alert dialog builder object
-        val builder = AlertDialog.Builder(activity)
-
-        // Set a title for alert dialog
-        builder.setTitle("Adding currency")
-
-        // Set a message for alert dialog
-        builder.setMessage("Are you sure to add ${selectedCurrency.toString()}?")
-
-
-        // On click listener for dialog buttons
-        val dialogClickListener = DialogInterface.OnClickListener{_,which ->
-            when(which){
-                DialogInterface.BUTTON_POSITIVE -> {
-                    var symbol: String?
-                    symbol = selectedCurrency!!.symbol
-
-                    var preferred: Boolean
-
-                    when (currencyViewModel.preferred.value) {
-                        true -> preferred = false
-                        false -> preferred = true
-                        null -> preferred = true
-                    }
-
-                    val currency = Currency(selectedCurrency!!.iso, selectedCurrency!!.name, symbol, preferred)
-                    currencyViewModel.insert(currency)
-                }
-            }
-        }
-
-
-        // Set the alert dialog positive/yes button
-        builder.setPositiveButton("YES",dialogClickListener)
-
-        // Set the alert dialog neutral/cancel button
-        builder.setNeutralButton("CANCEL",dialogClickListener)
-
-
-        // Initialize the AlertDialog using builder object
-        dialog = builder.create()
-
-        // Finally, display the alert dialog
-        dialog.show()
-    }
 
     override fun onClick(v: View?) {
         when (v) {
             ibAddCurrency -> {
-                showDialog()
+
+                lateinit var dialog:AlertDialog
+
+                val builder = AlertDialog.Builder(activity)
+                builder.setTitle(getString(R.string.dialog_add_title))
+                builder.setMessage("${getString(R.string.dialog_add_description)} ${selectedCurrency.toString()}?")
+
+                val dialogClickListener = DialogInterface.OnClickListener{_,which ->
+                    when(which){
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            var symbol: String?
+                            symbol = selectedCurrency!!.symbol
+
+                            val currency = Currency(selectedCurrency!!.iso, selectedCurrency!!.name, symbol, false)
+                            currencyViewModel.insert(currency)
+                        }
+                    }
+                }
+
+                builder.setPositiveButton(R.string.dialog_yes,dialogClickListener)
+                builder.setNeutralButton(R.string.dialog_cancel,dialogClickListener)
+
+                dialog = builder.create()
+                dialog.show()
 
             }
         }
@@ -179,15 +148,60 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
 
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
         selectedCurrency = parent.selectedItem as CurrencyData
-
     }
 
 
     override fun onNothingSelected(parent: AdapterView<*>) {
         // Nothing to do here.
+    }
+
+    override fun onDeleteClick(currency: Currency) {
+
+        lateinit var dialog:AlertDialog
+
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle(getString(R.string.dialog_delete_title))
+        builder.setMessage("${getString(R.string.dialog_delete_description)} ${currency.name}?")
+
+        val dialogClickListener = DialogInterface.OnClickListener{_,which ->
+            when(which){
+                DialogInterface.BUTTON_POSITIVE -> {
+                    currencyViewModel.delete(currency)
+                }
+            }
+        }
+
+        builder.setPositiveButton(R.string.dialog_yes,dialogClickListener)
+        builder.setNeutralButton(R.string.dialog_cancel,dialogClickListener)
+
+        dialog = builder.create()
+        dialog.show()
+    }
+
+    override fun onItemClick(currency: Currency) {
+
+        lateinit var dialog:AlertDialog
+
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle(getString(R.string.dialog_fav_title))
+        builder.setMessage("${getString(R.string.dialog_fav_description)} ${currency.name} ?")
+
+        val dialogClickListener = DialogInterface.OnClickListener{_,which ->
+            when(which){
+                DialogInterface.BUTTON_POSITIVE -> {
+                    currencyViewModel.noFavorites()
+                    val currencyUpdated = Currency(currency.id, currency.name, currency.symbol, !currency.preferred)
+                    currencyViewModel.update(currencyUpdated)
+                }
+            }
+        }
+
+        builder.setPositiveButton(R.string.dialog_yes,dialogClickListener)
+        builder.setNeutralButton(R.string.dialog_cancel,dialogClickListener)
+
+        dialog = builder.create()
+        dialog.show()
     }
 
 

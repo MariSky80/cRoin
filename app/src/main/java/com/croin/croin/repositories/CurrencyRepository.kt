@@ -11,6 +11,13 @@ class CurrencyRepository(private val currencyDao: CurrencyDao) {
 
     val preferred: LiveData<Currency> = currencyDao.getCurrencyByPreferred()
 
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun noFavorites() {
+        currencyDao.setNoFavorites()
+    }
+
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun insert(currency: Currency) {

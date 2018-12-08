@@ -13,7 +13,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
-        android:text="TextView"
+        android:contentDescription="@string/added_currency_description"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/ibFav"
@@ -29,13 +29,14 @@
         android:layout_marginEnd="30dp"
         android:background="@null"
         android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/not_fav_description"
         android:src="@drawable/ic_star_regular"
-        app:layout_constraintEnd_toStartOf="@+id/ivDelete"
+        app:layout_constraintEnd_toStartOf="@+id/ibDelete"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageButton
-        android:id="@+id/ivDelete"
+        android:id="@+id/ibDelete"
         style="@style/Widget.AppCompat.ImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,6 +44,7 @@
         android:layout_marginEnd="10dp"
         android:background="@null"
         android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/delete_button"
         android:src="@drawable/ic_times_solid"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
