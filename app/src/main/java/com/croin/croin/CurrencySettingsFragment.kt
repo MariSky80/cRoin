@@ -142,9 +142,9 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
                     var preferred: Boolean
 
                     when (currencyViewModel.preferred.value) {
-                        true -> preferred = true
-                        false -> preferred = false
-                        null -> preferred = false
+                        true -> preferred = false
+                        false -> preferred = true
+                        null -> preferred = true
                     }
 
                     val currency = Currency(selectedCurrency!!.iso, selectedCurrency!!.name, symbol, preferred)
