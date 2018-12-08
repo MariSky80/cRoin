@@ -5,25 +5,37 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.croin.croin.R
-import com.croin.croin.network.CurrencyMoshi
-import kotlinx.android.synthetic.main.currency_item.view.*
+import com.croin.croin.database.entity.Currency
 
-class CurrencyAdapter(val context: Context, val items: List<CurrencyMoshi>) : RecyclerView.Adapter<CurrencyAdapter.ViewHolder>() {
+class CurrencyAdapter internal constructor(context: Context) : RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
 
-    override fun getItemCount(): Int {
-        return items.size
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private var currencies = emptyList<Currency>()
+
+    inner class CurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val currencyItemView: TextView = itemView.findViewById(R.id.tvCurrency)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.currency_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
+        val itemView = inflater.inflate(R.layout.currency_item, parent, false)
+        return CurrencyViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemName.text = items[position].toString()
+    override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {
+        val current = currencies[position]
+        when (current.symbol.isNullOrEmpty()) {
+            true -> holder.currencyItemView.text = "${current.name} - ${current.id}"
+            false -> holder.currencyItemView.text = "${current.name} - ${current.id} (${current.symbol})"
+        }
+
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val itemName = view.tvCurrency
+    internal fun setCurrencies(currencies: List<Currency>) {
+        this.currencies = currencies
+        notifyDataSetChanged()
     }
+
+    override fun getItemCount() = currencies.size
 }

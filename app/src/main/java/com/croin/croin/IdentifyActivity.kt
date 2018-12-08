@@ -117,3 +117,36 @@ class IdentifyActivity : AppCompatActivity() {
     }
 
 }
+
+/*
+
+Get exchange!
+
+//Loging responses.
+        val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            this.level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client : OkHttpClient = OkHttpClient.Builder().apply {
+            this.addInterceptor(interceptor)
+        }.build()
+
+
+
+        val serviceCurrencies = Retrofit.Builder()
+                .baseUrl(URL_CURRENCY_CONVERTER)
+                .addConverterFactory(MoshiConverterFactory.create())
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                //.client(client)
+                .build()
+                .create(CurrencyService::class.java)
+
+        GlobalScope.launch {
+            val result = serviceCurrencies.retrieveCurrencyValue("EUR_USD", "ultra").await()
+
+
+            println(result.values)
+        }
+
+
+ */

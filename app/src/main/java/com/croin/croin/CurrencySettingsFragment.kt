@@ -1,8 +1,13 @@
 package com.croin.croin
 
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.Transformations
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,15 +15,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.croin.croin.adapters.CurrencyAdapter
-import com.croin.croin.data.AppDatabase
-import com.croin.croin.data.dao.CurrencyDao
-import com.croin.croin.network.CurrencyMoshi
+import com.croin.croin.models.CurrencyViewModel
+import com.croin.croin.network.CurrencyData
 import kotlinx.android.synthetic.main.fragment_currency.*
 import com.croin.croin.utilities.CURRENCY_DATA_FILENAME
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.io.IOException
+import android.arch.lifecycle.ViewModelProviders
+import android.util.Log
+import com.croin.croin.database.entity.Currency
 
 
 /**
@@ -29,11 +36,10 @@ import java.io.IOException
  */
 class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSelectedListener  {
 
-    private var db: AppDatabase? = null
-    private var currencyDao: CurrencyDao? = null
-    private var spContent: ArrayList<CurrencyMoshi> = arrayListOf()
-    private var selectedCurrency: CurrencyMoshi? = null
+    private var spContent: MutableList<CurrencyData> = arrayListOf()
+    private var selectedCurrency: CurrencyData? = null
     private var rvwCurrency: RecyclerView? = null
+    private lateinit var currencyViewModel: CurrencyViewModel
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -51,7 +57,7 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
 
         ibAddCurrency.setOnClickListener(this)
 
-
+        //Currencies spinner
         val spCurrencies: Spinner = viewCurrency.findViewById(R.id.spCurrencies)
         spContent = getCurrenciesFromJSon()
 
@@ -63,13 +69,27 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
 
         spCurrencies!!.setOnItemSelectedListener(this)
 
+        //RecyclerView currencies list
+        val recyclerView = viewCurrency.findViewById<RecyclerView>(R.id.rvCurrency)
+        val adapter = CurrencyAdapter(activity)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+
+        //CurrencyViewModel
+        currencyViewModel = ViewModelProviders.of(this).get(CurrencyViewModel::class.java)
+
+        currencyViewModel.allCurrencies.observe(this, Observer { currencies ->
+            // Update the cached copy of the words in the adapter.
+            currencies?.let { adapter.setCurrencies(it) }
+        })
+
         return viewCurrency
     }
 
 
-    private fun getCurrenciesFromJSon(): ArrayList<CurrencyMoshi> {
+    private fun getCurrenciesFromJSon(): MutableList<CurrencyData> {
 
-        val al: ArrayList<CurrencyMoshi> = arrayListOf()
+        val al: MutableList<CurrencyData> = mutableListOf()
 
         val jsonResponse = context.applicationContext.assets.open(CURRENCY_DATA_FILENAME).bufferedReader().use{
             it.readText()
@@ -77,8 +97,8 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
 
         val mCurrencyMoshi = Moshi.Builder().build()
 
-        val type = Types.newParameterizedType(List::class.java, CurrencyMoshi::class.java)
-        val jsonAdapter: JsonAdapter<List<CurrencyMoshi>> = mCurrencyMoshi.adapter(type)
+        val type = Types.newParameterizedType(List::class.java, CurrencyData::class.java)
+        val jsonAdapter: JsonAdapter<List<CurrencyData>> = mCurrencyMoshi.adapter(type)
 
 
         try {
@@ -86,101 +106,95 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
             for (i in currencies!!.indices) {
                 al.add(currencies[i])
             }
-            getUserCurrencies(al)
+
+            al.sortBy { it.name }
+
 
         } catch (e: IOException) {
             //e.printStackTrace()
         }
+
         return al
     }
 
-    private fun getUserCurrencies(alCurrency: ArrayList<CurrencyMoshi>) {
-        val currencies = mutableListOf<CurrencyMoshi>()
+    private fun showDialog(){
+        // Late initialize an alert dialog object
+        lateinit var dialog:AlertDialog
 
-        for (c in alCurrency!!.indices) {
-            currencies.add(alCurrency[c])
+
+        // Initialize a new instance of alert dialog builder object
+        val builder = AlertDialog.Builder(activity)
+
+        // Set a title for alert dialog
+        builder.setTitle("Adding currency")
+
+        // Set a message for alert dialog
+        builder.setMessage("Are you sure to add ${selectedCurrency.toString()}?")
+
+
+        // On click listener for dialog buttons
+        val dialogClickListener = DialogInterface.OnClickListener{_,which ->
+            when(which){
+                DialogInterface.BUTTON_POSITIVE -> {
+                    var symbol: String?
+                    symbol = selectedCurrency!!.symbol
+
+                    var preferred: Boolean
+
+                    when (currencyViewModel.preferred.value) {
+                        true -> preferred = true
+                        false -> preferred = false
+                        null -> preferred = false
+                    }
+
+                    val currency = Currency(selectedCurrency!!.iso, selectedCurrency!!.name, symbol, preferred)
+                    currencyViewModel.insert(currency)
+                }
+            }
         }
 
-        rvwCurrency!!.layoutManager = LinearLayoutManager(activity)
-        rvwCurrency!!.setHasFixedSize(true)
-        rvwCurrency!!.adapter = CurrencyAdapter(activity, currencies)
-    }
 
+        // Set the alert dialog positive/yes button
+        builder.setPositiveButton("YES",dialogClickListener)
+
+        // Set the alert dialog neutral/cancel button
+        builder.setNeutralButton("CANCEL",dialogClickListener)
+
+
+        // Initialize the AlertDialog using builder object
+        dialog = builder.create()
+
+        // Finally, display the alert dialog
+        dialog.show()
+    }
 
     override fun onClick(v: View?) {
         when (v) {
             ibAddCurrency -> {
-                println("ey!")
+                showDialog()
+
             }
         }
     }
 
+
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
-        selectedCurrency = parent.selectedItem as CurrencyMoshi
+        selectedCurrency = parent.selectedItem as CurrencyData
 
     }
+
 
     override fun onNothingSelected(parent: AdapterView<*>) {
         // Nothing to do here.
     }
 
 
-}// Required empty public constructor
-
-
-/*
-* DATABASE READER
-*
-* Observable.fromCallable({
-
-            db = AppDatabase.getInstance(context = this@CurrencySettingsFragment.context)
-
-            currencyDao = db?.currencyDao()
-
-            db?.currencyDao()?.getCurrencies()
-
-
-        }).doOnNext({ list ->
-            var finalString = ""
-            list?.map { finalString+= it.name+" - " }
-
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
-* */
-
-
-/*
-
-Get exchange!
-
-//Loging responses.
-        val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-            this.level = HttpLoggingInterceptor.Level.BODY
-        }
-
-        val client : OkHttpClient = OkHttpClient.Builder().apply {
-            this.addInterceptor(interceptor)
-        }.build()
+}
 
 
 
-        val serviceCurrencies = Retrofit.Builder()
-                .baseUrl(URL_CURRENCY_CONVERTER)
-                .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                //.client(client)
-                .build()
-                .create(CurrencyService::class.java)
-
-        GlobalScope.launch {
-            val result = serviceCurrencies.retrieveCurrencyValue("EUR_USD", "ultra").await()
 
 
-            println(result.values)
-        }
 
-
- */

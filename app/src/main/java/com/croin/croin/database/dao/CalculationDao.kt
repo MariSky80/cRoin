@@ -1,19 +1,19 @@
-package com.croin.croin.data.dao
+package com.croin.croin.database.dao
 
 import android.arch.persistence.room.*
-import com.croin.croin.data.entity.Calculation
+import com.croin.croin.database.entity.Calculation
 
 @Dao
 
 interface CalculationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCalculation(calculation: Calculation)
+    fun insert(calculation: Calculation)
 
     @Update
-    fun updateCalculation(calculation: Calculation)
+    fun update(calculation: Calculation)
 
     @Delete
-    fun deleteCalculation(calculation: Calculation)
+    fun delete(calculation: Calculation)
 
     @Query("SELECT * FROM calculations WHERE id == :id")
     fun getCalculationById(id: String): Calculation

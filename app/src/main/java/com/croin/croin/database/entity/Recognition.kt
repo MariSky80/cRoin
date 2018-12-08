@@ -1,4 +1,4 @@
-package com.croin.croin.data.entity
+package com.croin.croin.database.entity
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity

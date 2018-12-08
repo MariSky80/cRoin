@@ -1,4 +1,4 @@
-package com.croin.croin.data.converter
+package com.croin.croin.database.converter
 
 import android.arch.persistence.room.TypeConverter
 import java.util.*

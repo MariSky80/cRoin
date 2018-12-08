@@ -1,4 +1,4 @@
-package com.croin.croin.data.entity
+package com.croin.croin.database.entity
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
@@ -6,10 +6,9 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "currencies")
 
 data class Currency(
-        @PrimaryKey(autoGenerate = true)
-        val id: Int? = null,
+        @PrimaryKey
+        val id: String,
         val name: String,
-        val iso: String,
-        val symbol: String,
+        val symbol: String?,
         val preferred: Boolean
 )

@@ -1,19 +1,19 @@
-package com.croin.croin.data.dao
+package com.croin.croin.database.dao
 
 import android.arch.persistence.room.*
-import com.croin.croin.data.entity.Recognition
+import com.croin.croin.database.entity.Recognition
 
 @Dao
 
 interface RecognitionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecognition(recogniton: Recognition)
+    fun insert(recogniton: Recognition)
 
     @Update
-    fun updateRecognition(recogniton: Recognition)
+    fun update(recogniton: Recognition)
 
     @Delete
-    fun deleteRecognition(recogniton: Recognition)
+    fun delete(recogniton: Recognition)
 
     @Query("SELECT * FROM recognitions WHERE id == :id")
     fun getRecognitionById(id: String): List<Recognition>

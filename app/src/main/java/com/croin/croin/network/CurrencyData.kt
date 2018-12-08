@@ -1,12 +1,15 @@
 package com.croin.croin.network
 
-data class CurrencyMoshi (
+data class CurrencyData (
     val name: String,
     val iso: String,
     val symbol: String
 ) {
     override fun toString(): String {
-        return "$name ($iso)"
+        when (symbol.isNullOrEmpty()) {
+            true -> return name
+            false -> return "$name ($symbol)"
+        }
     }
 }
 
