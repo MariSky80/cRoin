@@ -17,13 +17,13 @@ interface CurrencyDao {
     fun delete(currency: Currency)
 
     @Query("SELECT * FROM currencies WHERE id == :id")
-    fun getCurrencyById(id: String): LiveData<Currency>
+    fun getCurrencyById(id: String): Currency
 
     @Query("UPDATE currencies SET preferred = 0")
     fun setNoFavorites()
 
     @Query("SELECT * FROM currencies WHERE preferred LIMIT 1")
-    fun getCurrencyByPreferred():  LiveData<Currency>
+    fun getCurrencyByPreferred(): LiveData<Currency>
 
     @Query("SELECT * FROM currencies")
     fun getCurrencies():  LiveData<List<Currency>>

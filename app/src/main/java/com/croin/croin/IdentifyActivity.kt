@@ -1,24 +1,35 @@
 package com.croin.croin
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import com.croin.croin.database.entity.Currency
+import com.croin.croin.models.CurrencyViewModel
+import com.croin.croin.network.CurrencyService
 import com.croin.croin.tensorflow.Classifier
 import com.croin.croin.tensorflow.TensorFlowImageClassifier
+import com.croin.croin.utilities.URL_CURRENCY_CONVERTER
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.android.synthetic.main.activity_identify.*
 import kotlinx.android.synthetic.main.content_identify.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 class IdentifyActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "IdentifyActivity"
-        private const val INPUT_WIDTH = 224
-        private const val INPUT_HEIGHT = 224
+        private const val INPUT_SIZE_TF = 224
         private const val IMAGE_MEAN = 128
         private const val IMAGE_STD = 128f
         private const val INPUT_NAME = "input"
@@ -27,9 +38,15 @@ class IdentifyActivity : AppCompatActivity() {
         private const val LABEL_FILE = "file:///android_asset/coins_labels.txt"
     }
 
+    private lateinit var currencyViewModel: CurrencyViewModel
+
     private var classifier: Classifier? = null
     private var initializeJob: Job? = null
     private var identifiedBitmap: Bitmap? = null
+    private var coinDetected = 0
+    private var currencyExchange = 0f
+    private var favCurrency: Currency? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +60,11 @@ class IdentifyActivity : AppCompatActivity() {
 
         identifiedBitmap = getExtra("capture")
 
-        initializeTensorClassifier()
 
+        //CurrencyViewModel
+        currencyViewModel = ViewModelProviders.of(this).get(CurrencyViewModel::class.java)
+
+        initializeTensorClassifier()
 
     }
 
@@ -58,16 +78,31 @@ class IdentifyActivity : AppCompatActivity() {
     }
 
     private fun onImageCaptured() {
-        identifiedBitmap = Bitmap.createScaledBitmap(identifiedBitmap, INPUT_WIDTH, INPUT_HEIGHT, false)
 
-        iCapture.setImageBitmap(identifiedBitmap)
+        ivCapture.setImageBitmap(identifiedBitmap)
+
+        val outWidthTF: Int
+        val outHeightTF: Int
+        val inWidthTF: Int = identifiedBitmap!!.width
+        val inHeightTF: Int = identifiedBitmap!!.height
+        if(inWidthTF > inHeightTF) {
+            outWidthTF = INPUT_SIZE_TF
+            outHeightTF = (inHeightTF * INPUT_SIZE_TF) / inWidthTF
+        } else {
+            outHeightTF = INPUT_SIZE_TF
+            outWidthTF = (inWidthTF * INPUT_SIZE_TF) / inHeightTF
+        }
+
+        identifiedBitmap = Bitmap.createScaledBitmap(identifiedBitmap, outWidthTF, outHeightTF, false)
+
+
 
         runOnUiThread {
             classifier?.let {
                 try {
                     showRecognizedResult(classifier!!.recognizeImage(identifiedBitmap))
                 } catch (e: java.lang.RuntimeException) {
-                    Log.e(TAG, "Crashing due to classification.closed() before the recognizer finishes!")
+                    Log.e(TAG, "Crashing due to classification.closed() before the recognizer finishes! " + e)
                 }
             }
         }
@@ -76,16 +111,12 @@ class IdentifyActivity : AppCompatActivity() {
     private fun showRecognizedResult(results: MutableList<Classifier.Recognition>) {
         runOnUiThread {
             if (results.isEmpty()) {
-                textResult.text = "Not found"
+                coinDetected = 0
+                tvDetection.text = getString(R.string.not_found)
             } else {
-                val coin = results[0].title
-                val confidence = results[0].confidence
-                textResult.text = when {
-                    confidence > 0.95 -> "Wooooho: " + coin
-                    confidence > 0.85 -> "Perhaps: " + coin
-                    else -> "Maybe: " + coin
-                }
-                Log.e(TAG, "S'ha arribat fins aqui!!!!!!!")
+                coinDetected = results[0].title.toInt()
+                tvDetection.text = "${getString(R.string.value_identified)}: ${coinDetected.toString()} €"
+                getFavCurrency()
             }
         }
     }
@@ -94,7 +125,7 @@ class IdentifyActivity : AppCompatActivity() {
         initializeJob = GlobalScope.launch {
             try {
                 classifier = TensorFlowImageClassifier.create(
-                        assets, MODEL_FILE, LABEL_FILE, INPUT_WIDTH, INPUT_HEIGHT,
+                        assets, MODEL_FILE, LABEL_FILE, INPUT_SIZE_TF, INPUT_SIZE_TF,
                         IMAGE_MEAN, IMAGE_STD, INPUT_NAME, OUTPUT_NAME)
                 runOnUiThread {
                     onImageCaptured()
@@ -111,18 +142,20 @@ class IdentifyActivity : AppCompatActivity() {
         classifier?.close()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        clearTensorClassifier()
+    private fun getFavCurrency() {
+        currencyViewModel.preferred.observe(this@IdentifyActivity, Observer { currency ->
+            currency?.let {
+                favCurrency = it
+                getCurrencyExchange()
+
+            }
+        })
+
+
     }
 
-}
-
-/*
-
-Get exchange!
-
-//Loging responses.
+    private fun getCurrencyExchange() {
+        /*DEBUG RESPONSE*/
         val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
             this.level = HttpLoggingInterceptor.Level.BODY
         }
@@ -131,22 +164,38 @@ Get exchange!
             this.addInterceptor(interceptor)
         }.build()
 
-
-
         val serviceCurrencies = Retrofit.Builder()
                 .baseUrl(URL_CURRENCY_CONVERTER)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                //.client(client)
+                .client(client)
                 .build()
                 .create(CurrencyService::class.java)
 
-        GlobalScope.launch {
-            val result = serviceCurrencies.retrieveCurrencyValue("EUR_USD", "ultra").await()
+        GlobalScope.launch(Dispatchers.Main) {
 
+            favCurrency?.let {
+                val sendCurrencies = "EUR_${favCurrency!!.id}"
 
-            println(result.values)
+                val result = serviceCurrencies.retrieveCurrencyValue(sendCurrencies, "ultra").await()
+
+                currencyExchange = result.values.first()
+
+                val exchange: Float = currencyExchange * coinDetected * 1f
+
+                if (currencyExchange > 0f) {
+                    tvCurrencyExchange.setText("${getString(R.string.currency_exchange)}: ${exchange} ${favCurrency!!.symbol} (${favCurrency!!.id})")
+                } else {
+                    tvCurrencyExchange.setText(getString(R.string.no_currency_exchange))
+                }
+            }
+
         }
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        clearTensorClassifier()
+    }
 
- */
+}

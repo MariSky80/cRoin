@@ -23,16 +23,14 @@ class CurrencyViewModel(application: Application): AndroidViewModel(application)
     private var db: CroinDatabase = CroinDatabase.getDatabase(application)
     private val repository: CurrencyRepository
     val allCurrencies: LiveData<List<Currency>>
-    val preferred: LiveData<Boolean>
+    val preferred: LiveData<Currency>
 
     init {
         repository = CurrencyRepository(db.currencyDao())
         allCurrencies = repository.allCurrencies
-
-        preferred = Transformations.map(repository.preferred) {
-            currency -> currency.preferred
-        }
+        preferred = repository.preferred
     }
+
 
     fun noFavorites() = scope.launch(Dispatchers.IO) {
         repository.noFavorites()

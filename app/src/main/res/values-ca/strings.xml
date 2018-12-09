@@ -9,11 +9,8 @@
     <string name="title_currency">Divisa</string>
     <string name="title_historical">Històric</string>
     <string name="title_home">Home</string>
-    <string name="title_identifier">Reconeixement</string>
+    <string name="title_identifier">Identificació</string>
     <string name="title_language">Idioma</string>
-
-    <!-- Splash Screen -->
-    <string name="splash_description">Splash cRoin logo</string>
 
     <!-- FRAGMENTS -->
     <!-- Home fragment -->
@@ -37,13 +34,25 @@
     <string name="dialog_fav_description">Estàs segur de canviar l\'estat de </string>
 
     <!-- ACTIVITIES -->
+    <!-- Splash Screen -->
+    <string name="splash_description">Splash cRoin logo</string>
+
     <!-- Ifentify Activity -->
     <string name="title_activity_identify">IdentifyActivity</string>
+    <string name="capture_description">Captura d\'imatge de la càmera</string>
+    <string name="identified_description">Valor identificat</string>
+    <string name="not_found">Divisa no trobada</string>
+    <string name="value_identified">Valor identificat</string>
+    <string name="currency_exchange">Canvi de divisa</string>
+    <string name="no_currency_exchange">Divisa no trobada</string>
 
     <!-- DIALOG GENERIC -->
     <string name="dialog_cancel">CANCEL·LAR</string>
     <string name="dialog_no">NO</string>
     <string name="dialog_yes">SÍ</string>
+
+    <!-- OTHER -->
+    <string name="under_construction">En construcció</string>
 
     <!-- Permissons -->
     <string name="permission_denied">Accés denegat</string>

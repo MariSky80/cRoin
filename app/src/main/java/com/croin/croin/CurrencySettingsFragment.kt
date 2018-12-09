@@ -21,7 +21,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.io.IOException
 import android.arch.lifecycle.ViewModelProviders
-import android.util.Log
 import com.croin.croin.database.entity.Currency
 
 
@@ -35,7 +34,6 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
 
     private var spContent: MutableList<CurrencyData> = arrayListOf()
     private var selectedCurrency: CurrencyData? = null
-    private var rvwCurrency: RecyclerView? = null
     private lateinit var currencyViewModel: CurrencyViewModel
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -74,7 +72,7 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
         currencyViewModel = ViewModelProviders.of(this).get(CurrencyViewModel::class.java)
 
         currencyViewModel.allCurrencies.observe(this, Observer { currencies ->
-            // Update the cached copy of the words in the adapter.
+            // Update the cached copy of the currencies in the adapter.
             currencies?.let { adapter.setCurrencies(it) }
         })
 

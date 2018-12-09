@@ -9,11 +9,9 @@
     <string name="title_currency">Currency</string>
     <string name="title_historical">History</string>
     <string name="title_home">Home</string>
-    <string name="title_identifier">Recognition</string>
+    <string name="title_identifier">Identification</string>
     <string name="title_language">Language</string>
 
-    <!-- Splash Screen -->
-    <string name="splash_description">Splash cRoin logo</string>
 
     <!-- FRAGMENTS -->
     <!-- Home fragment -->
@@ -37,14 +35,25 @@
     <string name="dialog_fav_description">Are you sure to change favourite state from </string>
 
     <!-- ACTIVITIES -->
+    <!-- Splash Screen -->
+    <string name="splash_description">Splash cRoin logo</string>
+
     <!-- Ifentify Activity -->
     <string name="title_activity_identify">IdentifyActivity</string>
-
+    <string name="capture_description">Captured image from camera</string>
+    <string name="identified_description">Value identified</string>
+    <string name="not_found">Currency not found</string>
+    <string name="value_identified">Identified value</string>
+    <string name="currency_exchange">Currency exchange</string>
+    <string name="no_currency_exchange">Currency not found</string>
 
     <!-- DIALOG GENERIC -->
     <string name="dialog_cancel">CANCEL</string>
     <string name="dialog_no">NO</string>
     <string name="dialog_yes">SÍ</string>
+
+    <!-- OTHER -->
+    <string name="under_construction">Under construction</string>
 
     <!-- Permissons -->
     <string name="permission_denied">Permission denied</string>
