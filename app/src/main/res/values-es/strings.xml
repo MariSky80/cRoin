@@ -45,6 +45,15 @@
     <string name="value_identified">Valor identificado</string>
     <string name="currency_exchange">Cambio de divisa</string>
     <string name="no_currency_exchange">Divisa no encontrada</string>
+    <string name="identification_name">Nombre</string>
+    <string name="identification_name_description">Nombre del reconecimiento</string>
+    <string name="identification_comment">Comentari</string>
+    <string name="identification_comment_description">Comentario del reconocimiento</string>
+    <string name="button_location_description">Obtiene tu localización</string>
+    <string name="toolbar_save_item">Guardar</string>
+    <string name="dialog_location_title">Localización</string>
+    <string name="dialog_location_description">La aplicación no puede acceder a tu posición ya que no tiene permisos</string>
+    <string name="location_saved">Tu localización se ha guardado correctamente.</string>
 
     <!-- DIALOG GENERIC -->
     <string name="dialog_cancel">CANCELAR</string>

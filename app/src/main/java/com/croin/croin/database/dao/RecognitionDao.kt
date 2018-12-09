@@ -1,5 +1,6 @@
 package com.croin.croin.database.dao
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import com.croin.croin.database.entity.Recognition
 
@@ -16,8 +17,8 @@ interface RecognitionDao {
     fun delete(recogniton: Recognition)
 
     @Query("SELECT * FROM recognitions WHERE id == :id")
-    fun getRecognitionById(id: String): List<Recognition>
+    fun getRecognitionById(id: Int): LiveData<Recognition>
 
     @Query("SELECT * FROM recognitions ORDER BY created_at")
-    fun getRecognitions(): List<Recognition>
+    fun getRecognitions(): LiveData<List<Recognition>>
 }

@@ -1,14 +1,29 @@
 package com.croin.croin
 
+import android.Manifest
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import com.croin.croin.database.entity.Currency
+import com.croin.croin.database.entity.Recognition
 import com.croin.croin.models.CurrencyViewModel
+import com.croin.croin.models.RecognitionViewModel
 import com.croin.croin.network.CurrencyService
 import com.croin.croin.tensorflow.Classifier
 import com.croin.croin.tensorflow.TensorFlowImageClassifier
@@ -25,7 +40,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class IdentifyActivity : AppCompatActivity() {
+class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         private const val TAG = "IdentifyActivity"
@@ -36,9 +51,11 @@ class IdentifyActivity : AppCompatActivity() {
         private const val OUTPUT_NAME = "final_result"
         private const val MODEL_FILE = "file:///android_asset/optimized_coins_graph.pb"
         private const val LABEL_FILE = "file:///android_asset/coins_labels.txt"
+        private const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 100
     }
 
     private lateinit var currencyViewModel: CurrencyViewModel
+    private var recogintionViewModel: RecognitionViewModel
 
     private var classifier: Classifier? = null
     private var initializeJob: Job? = null
@@ -46,6 +63,7 @@ class IdentifyActivity : AppCompatActivity() {
     private var coinDetected = 0
     private var currencyExchange = 0f
     private var favCurrency: Currency? = null
+    private var currentLocation: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,9 +78,13 @@ class IdentifyActivity : AppCompatActivity() {
 
         identifiedBitmap = getExtra("capture")
 
+        ibLocation.setOnClickListener(this)
 
         //CurrencyViewModel
         currencyViewModel = ViewModelProviders.of(this).get(CurrencyViewModel::class.java)
+
+        //RecognitionViewModel
+        recogintionViewModel = ViewModelProviders.of(this).get(RecognitionViewModel::class.java)
 
         initializeTensorClassifier()
 
@@ -147,7 +169,6 @@ class IdentifyActivity : AppCompatActivity() {
             currency?.let {
                 favCurrency = it
                 getCurrencyExchange()
-
             }
         })
 
@@ -193,9 +214,109 @@ class IdentifyActivity : AppCompatActivity() {
         }
     }
 
+    fun getLocation() {
+
+        var locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
+
+        var locationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location?) {
+                var latitude = location!!.latitude
+                var longitude = location!!.longitude
+                currentLocation = "$latitude,$longitude"
+                Toast.makeText(applicationContext, getString(R.string.location_saved), Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+            }
+
+            override fun onProviderEnabled(provider: String?) {
+            }
+
+            override fun onProviderDisabled(provider: String?) {
+            }
+
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    PERMISSION_REQUEST_ACCESS_FINE_LOCATION)
+            return
+        }
+        locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+
+        try {
+            locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+        } catch (ex:SecurityException) {
+            Toast.makeText(applicationContext, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    //setting menu in action bar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.identify_top_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    // actions on click menu items
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_save -> {
+            //Abans de res guardar la imatge per a poder agafar-ne la ubicació i guardar-la a la bbdd
+            //veure com es posa la data actual en timestamp i ja guardaré!
+            //var recognition = Recognition(null, tvName.text, tvDescription.text, "Guardar imatge", coinDetected as Float, currentLocation, )
+            //recogintionViewModel.insert(recognition)
+            //TODO llistat el recyclerview amb tots els reconeixements (faltarà el onclick i editar però passo).
+            Toast.makeText(this,"Save action",Toast.LENGTH_LONG).show()
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_ACCESS_FINE_LOCATION) {
+            when (grantResults[0]) {
+                PackageManager.PERMISSION_GRANTED -> getLocation()
+                PackageManager.PERMISSION_DENIED -> {
+                    lateinit var dialog: AlertDialog
+
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle(getString(R.string.dialog_location_title))
+                    builder.setMessage(getString(R.string.dialog_location_description))
+
+                    val dialogClickListener = DialogInterface.OnClickListener{ _, which ->
+                        when(which){
+                            DialogInterface.BUTTON_POSITIVE -> {}
+                        }
+                    }
+
+                    builder.setPositiveButton(R.string.dialog_yes,dialogClickListener)
+
+                    dialog = builder.create()
+                    dialog.show()
+                }
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         clearTensorClassifier()
+    }
+
+    override fun onClick(v: View?) {
+        when (v) {
+            ibLocation -> {
+                getLocation()
+            }
+        }
     }
 
 }

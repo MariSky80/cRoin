@@ -46,6 +46,15 @@
     <string name="value_identified">Identified value</string>
     <string name="currency_exchange">Currency exchange</string>
     <string name="no_currency_exchange">Currency not found</string>
+    <string name="identification_name">Name</string>
+    <string name="identification_name_description">Name of identification</string>
+    <string name="identification_comment">Comment</string>
+    <string name="identification_comment_description">Comment of identification</string>
+    <string name="button_location_description">Get your location</string>
+    <string name="toolbar_save_item">Save</string>
+    <string name="dialog_location_title">Location</string>
+    <string name="dialog_location_description">Grand permissions to allow application get access to you location</string>
+    <string name="location_saved">You location has been saved!</string>
 
     <!-- DIALOG GENERIC -->
     <string name="dialog_cancel">CANCEL</string>
@@ -59,3 +68,4 @@
     <string name="permission_denied">Permission denied</string>
 
 </resources>
+

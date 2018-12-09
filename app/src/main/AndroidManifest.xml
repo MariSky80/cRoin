@@ -14,7 +14,8 @@
     <!-- INTERNET PERMISSION -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
-    <uses-feature android:name="android.view.SurfaceView" />
+    <!-- LOCATION PERMISSION -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"

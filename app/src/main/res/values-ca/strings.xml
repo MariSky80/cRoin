@@ -45,6 +45,15 @@
     <string name="value_identified">Valor identificat</string>
     <string name="currency_exchange">Canvi de divisa</string>
     <string name="no_currency_exchange">Divisa no trobada</string>
+    <string name="identification_name">Nom</string>
+    <string name="identification_name_description">Nom del reconeixement</string>
+    <string name="identification_comment">Comentari</string>
+    <string name="identification_comment_description">Comentari del reoneixement</string>
+    <string name="button_location_description">Obté la teva localització</string>
+    <string name="toolbar_save_item">Guardar</string>
+    <string name="dialog_location_title">Localització</string>
+    <string name="dialog_location_description">L\'aplicació no pot accedir a la teva geoposició ja que no disposa de permís</string>
+    <string name="location_saved">La teva locatització s\'ha guardat correctament</string>
 
     <!-- DIALOG GENERIC -->
     <string name="dialog_cancel">CANCEL·LAR</string>
