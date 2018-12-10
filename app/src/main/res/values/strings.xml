@@ -55,6 +55,7 @@
     <string name="dialog_location_title">Location</string>
     <string name="dialog_location_description">Grand permissions to allow application get access to you location</string>
     <string name="location_saved">You location has been saved!</string>
+    <string name="identify_saved">You recognition has been saved correctly.</string>
 
     <!-- DIALOG GENERIC -->
     <string name="dialog_cancel">CANCEL</string>
@@ -68,4 +69,5 @@
     <string name="permission_denied">Permission denied</string>
 
 </resources>
+
 

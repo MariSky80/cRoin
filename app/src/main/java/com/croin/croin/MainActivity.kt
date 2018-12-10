@@ -1,5 +1,6 @@
 package com.croin.croin
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -40,7 +41,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
         false
+
+
     }
+
 
     /**
      * Overrides onCreate default function from activity behaviour.
@@ -58,8 +62,18 @@ class MainActivity : AppCompatActivity() {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        replaceFragment(HomeFragment())
+        var receivedFragment: String? = getExtra("fragment")
 
+        when(receivedFragment) {
+            null -> replaceFragment(HomeFragment())
+            "History" -> replaceFragment(HistoryFragment())
+        }
+
+
+    }
+
+    inline fun <reified T> Activity.getExtra(extra: String): T? {
+        return intent.extras?.get(extra) as? T?
     }
 
     /**

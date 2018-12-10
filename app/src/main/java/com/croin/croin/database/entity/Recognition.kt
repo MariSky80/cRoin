@@ -3,6 +3,7 @@ package com.croin.croin.database.entity
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import android.arch.persistence.room.TypeConverters
 import java.util.*
 
 @Entity(tableName = "recognitions")
@@ -14,7 +15,7 @@ data class Recognition(
         val comment: String,
         val image: String,
         val quantity: Double,
-        val location: String,
+        val location: String?,
         @ColumnInfo(name = "created_at")
         val createdAt: Date,
         @ColumnInfo(name = "updated_at")

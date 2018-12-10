@@ -54,6 +54,7 @@
     <string name="dialog_location_title">Localització</string>
     <string name="dialog_location_description">L\'aplicació no pot accedir a la teva geoposició ja que no disposa de permís</string>
     <string name="location_saved">La teva locatització s\'ha guardat correctament</string>
+    <string name="identify_saved">La identificació s\'ha guardat correctamnet.</string>
 
     <!-- DIALOG GENERIC -->
     <string name="dialog_cancel">CANCEL·LAR</string>

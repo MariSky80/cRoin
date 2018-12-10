@@ -4,13 +4,17 @@ import android.Manifest
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -39,6 +43,12 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.util.*
+
 
 class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -55,7 +65,7 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private lateinit var currencyViewModel: CurrencyViewModel
-    private var recogintionViewModel: RecognitionViewModel
+    private lateinit var recogintionViewModel: RecognitionViewModel
 
     private var classifier: Classifier? = null
     private var initializeJob: Job? = null
@@ -169,6 +179,8 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
             currency?.let {
                 favCurrency = it
                 getCurrencyExchange()
+            } ?: run {
+                tvCurrencyExchange.text = getString(R.string.no_currency_exchange)
             }
         })
 
@@ -176,7 +188,7 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getCurrencyExchange() {
-        /*DEBUG RESPONSE*/
+        //DEBUG RESPONSE
         val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
             this.level = HttpLoggingInterceptor.Level.BODY
         }
@@ -203,18 +215,17 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
                 currencyExchange = result.values.first()
 
                 val exchange: Float = currencyExchange * coinDetected * 1f
-
                 if (currencyExchange > 0f) {
-                    tvCurrencyExchange.setText("${getString(R.string.currency_exchange)}: ${exchange} ${favCurrency!!.symbol} (${favCurrency!!.id})")
+                    tvCurrencyExchange.text = "${getString(R.string.currency_exchange)}: ${exchange} ${favCurrency!!.symbol} (${favCurrency!!.id})"
                 } else {
-                    tvCurrencyExchange.setText(getString(R.string.no_currency_exchange))
+                    tvCurrencyExchange.text = getString(R.string.no_currency_exchange)
                 }
             }
 
         }
     }
 
-    fun getLocation() {
+    private fun getLocation() {
 
         var locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
 
@@ -223,7 +234,6 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
                 var latitude = location!!.latitude
                 var longitude = location!!.longitude
                 currentLocation = "$latitude,$longitude"
-                Toast.makeText(applicationContext, getString(R.string.location_saved), Toast.LENGTH_SHORT).show()
             }
 
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
@@ -248,9 +258,55 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
 
         try {
+            Toast.makeText(applicationContext, getString(R.string.location_saved), Toast.LENGTH_SHORT).show()
             locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
         } catch (ex:SecurityException) {
             Toast.makeText(applicationContext, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun saveImageToInternalStorage(): String {
+
+        // Get the bitmap from drawable object
+        val bitmap = identifiedBitmap
+
+        // Get the context wrapper instance
+        val wrapper = ContextWrapper(applicationContext)
+
+        // The bellow line return a directory in internal storage
+        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
+
+
+        // Create a file to save the image
+        var fileName = "${UUID.randomUUID()}.jpg"
+        file = File(file, fileName)
+
+        try {
+            val stream: OutputStream = FileOutputStream(file)
+            bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.flush()
+            stream.close()
+        } catch (e: IOException){
+            //e.printStackTrace()
+            Log.e("ERROR", "Error saving image!")
+        }
+
+        // Return the saved image uri
+        return fileName
+    }
+
+    private fun Intent.addExtra(key: String, value: Any?) {
+        when (value) {
+            is Long -> putExtra(key, value)
+            is String -> putExtra(key, value)
+            is Boolean -> putExtra(key, value)
+            is Float -> putExtra(key, value)
+            is Double -> putExtra(key, value)
+            is Int -> putExtra(key, value)
+            is Parcelable -> putExtra(key, value)
+            is Bitmap -> putExtra(key, value)
+            //Add other types when needed
         }
     }
 
@@ -263,12 +319,25 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
     // actions on click menu items
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_save -> {
-            //Abans de res guardar la imatge per a poder agafar-ne la ubicació i guardar-la a la bbdd
-            //veure com es posa la data actual en timestamp i ja guardaré!
-            //var recognition = Recognition(null, tvName.text, tvDescription.text, "Guardar imatge", coinDetected as Float, currentLocation, )
-            //recogintionViewModel.insert(recognition)
-            //TODO llistat el recyclerview amb tots els reconeixements (faltarà el onclick i editar però passo).
-            Toast.makeText(this,"Save action",Toast.LENGTH_LONG).show()
+            //Save image into internal storage
+            val imageName = saveImageToInternalStorage()
+
+            //Save recognition
+            var recognition = Recognition(null,
+                    tvName.text as String,
+                    tvDescription.text as String,
+                    imageName,
+                    coinDetected.toDouble(),
+                    currentLocation,
+                    Calendar.getInstance().time,
+                    Calendar.getInstance().time
+            )
+            recogintionViewModel.insert(recognition)
+            Toast.makeText(this,getString(R.string.identify_saved),Toast.LENGTH_LONG).show()
+
+            val intentMain = Intent(this, MainActivity::class.java)
+            intentMain.addExtra("fragment", "History")
+            startActivity(intentMain)
             true
         }
 
