@@ -1,7 +1,7 @@
 package com.croin.croin.utilities
 
 /**
- * Constants
+ * Constants used.
  */
 const val DATABASE_NAME = "croin_db"
 const val DATABASE_VERSION = 4

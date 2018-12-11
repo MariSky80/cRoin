@@ -36,6 +36,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
     /**
      * Overrides onCreateView default function from fragment behaviour.
      *
+     * @param LayoutInflater
+     * @param ViewGroup?
+     * @param Bundle?
+     *
+     * @return View?
      */
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -56,6 +61,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     }
 
+
+    /**
+     * Gives animations to a buttons passed.
+     *
+     * @param ImageButton to animate.
+     *
+     */
     private fun animateIdentifyButton(ib: ImageButton?) {
         // arcTo() and PathInterpolator only available on API 21+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -68,6 +80,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
+
+    /**
+     * Overrides onClick from ImageButton listener.
+     * Call the camera function but before asks permissions if needed.
+     *
+     * @param View
+     *
+     */
     override fun onClick(v: View?) {
         when (v) {
             ibIdentifier -> {
@@ -86,12 +106,26 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
+
+    /**
+     * Open an intent to open the camera after the user accepts permissions.
+     *
+     */
     private fun openCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (intent.resolveActivity(activity.packageManager) != null)
             startActivityForResult(intent, CAMERA_REQUEST_CODE)
     }
 
+
+    /**
+     * Overrides onRequestPermissionsResult and asks permissions if needed.
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     *
+     */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_GALLERY_CAMERA) {
@@ -103,6 +137,15 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
+
+    /**
+     * Overrides onActivityResult and if the user took a photo it is passed to IdentifyActivity.
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param Intent
+     *
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -120,6 +163,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
+
+    /**
+     * Add estra information to activity before startint it.
+     *
+     * @param String key name
+     * @param Any? any value passed like Long, String, Boolean, Float, Double, Int, Parceable, Bitmap, ...
+     */
     private fun Intent.addExtra(key: String, value: Any?) {
         when (value) {
             is Long -> putExtra(key, value)

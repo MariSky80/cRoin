@@ -20,12 +20,24 @@ import android.net.Uri
 
 
 /**
- * A simple [Fragment] subclass.
+ * @author Maricel Bros Maimó
+ *
+ * HistoryFragment subclass.
+ *
  */
 class HistoryFragment : Fragment(), RecognitionAdapter.OnItemClickListener {
 
     private lateinit var recogintionViewModel: RecognitionViewModel
 
+    /**
+     * Overrides onCreateView default function from fragment behaviour.
+     *
+     * @param LayoutInflater
+     * @param ViewGroup?
+     * @param Bundle?
+     *
+     * @return View?
+     */
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -51,6 +63,13 @@ class HistoryFragment : Fragment(), RecognitionAdapter.OnItemClickListener {
         return viewHistory
     }
 
+
+    /**
+     * Overrides onDeleteClick function from reciclerViewItem delete item button.
+     * Deletes recognition register.
+     *
+     * @param Recognition Entity from recognitions table from database.
+     */
     override fun onDeleteClick(recognition: Recognition) {
         lateinit var dialog: AlertDialog
 
@@ -73,6 +92,13 @@ class HistoryFragment : Fragment(), RecognitionAdapter.OnItemClickListener {
         dialog.show()
     }
 
+
+    /**
+     * Overrides onLocationClick function from reciclerViewItem location item button.
+     * Opens google maps with position where identification was taken.
+     *
+     * @param Recognition Entity from recognitions table from database.
+     */
     override fun onLocationClick(recognition: Recognition) {
         lateinit var dialog: AlertDialog
 

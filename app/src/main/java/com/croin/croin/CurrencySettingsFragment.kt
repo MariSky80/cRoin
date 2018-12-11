@@ -36,6 +36,15 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
     private var selectedCurrency: CurrencyData? = null
     private lateinit var currencyViewModel: CurrencyViewModel
 
+    /**
+     * Overrides onCreateView default function from fragment behaviour.
+     *
+     * @param LayoutInflater
+     * @param ViewGroup?
+     * @param Bundle?
+     *
+     * @return View?
+     */
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -81,6 +90,12 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
     }
 
 
+    /**
+     * Gets a list of currency with id, symbol and name from a JSon stored at assets.
+     *
+     * @return MutableList<CurrencyData> a list of currencies sorted by name.
+     *
+     */
     private fun getCurrenciesFromJSon(): MutableList<CurrencyData> {
 
         val al: MutableList<CurrencyData> = mutableListOf()
@@ -111,7 +126,13 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
         return al
     }
 
-
+    /**
+     * Overrides onClick function from add currency button.
+     * Adds selected currency from spinner to recycler view.
+     *
+     * @param View?
+     *
+     */
     override fun onClick(v: View?) {
         when (v) {
             ibAddCurrency -> {
@@ -145,15 +166,37 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
     }
 
 
+    /**
+     * Overrides onItemSelected default function from spinner.
+     * Save current currency selected.
+     *
+     * @param AdapterView<*>
+     * @param View
+     * @param Int position
+     * @param Long identifier
+     *
+     */
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
         selectedCurrency = parent.selectedItem as CurrencyData
     }
 
 
+    /**
+     * Overrides onNothingSelected default function from spinner.
+     *
+     */
     override fun onNothingSelected(parent: AdapterView<*>) {
         // Nothing to do here.
     }
 
+
+    /**
+     * Overrides onDeleteClick from the delete button of recyclerView item
+     * Deletes a currency from the showed list.
+     *
+     * @param Currency entity currency from database.
+     *
+     */
     override fun onDeleteClick(currency: Currency) {
 
         lateinit var dialog:AlertDialog
@@ -177,6 +220,14 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
         dialog.show()
     }
 
+
+    /**
+     * Overrides onItemClick from the favorite button of recyclerView item
+     * Add or delete currency favorite state.
+     *
+     * @param Currency entity currency from database.
+     *
+     */
     override fun onItemClick(currency: Currency) {
 
         lateinit var dialog:AlertDialog

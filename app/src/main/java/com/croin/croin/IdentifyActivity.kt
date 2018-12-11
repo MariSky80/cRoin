@@ -24,7 +24,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import com.croin.croin.database.entity.Currency
 import com.croin.croin.database.entity.Recognition
@@ -51,7 +50,12 @@ import java.io.IOException
 import java.io.OutputStream
 import java.util.*
 
-
+/**
+ * @author Maricel Bros Maimó
+ *
+ * IdentifyActivity class.
+ *
+ */
 class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
@@ -78,6 +82,12 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
     private var currentLocation: String? = null
 
 
+    /**
+     * Overrides onCreate default function from activity behaviour.
+     *
+     * @param savedInstanceState: Bundle
+     *
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_identify)
@@ -98,19 +108,40 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         //RecognitionViewModel
         recogintionViewModel = ViewModelProviders.of(this).get(RecognitionViewModel::class.java)
 
+        //Init TensorFlow Classifier
         initializeTensorClassifier()
 
     }
 
+
+    /**
+     * Overrides onSupportNavigateUp from activity behaviour.
+     *
+     * @return Boolean
+     *
+     */
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
 
+
+    /**
+     * Gets extra information passed from other activity or fragment.
+     *
+     * @param String key name of the searched object.
+     *
+     * @return T? object
+     *
+     */
     inline fun <reified T> Activity.getExtra(extra: String): T? {
         return intent.extras?.get(extra) as? T?
     }
 
+
+    /**
+     * Starts thread startint tensorflow recognitions.
+     */
     private fun onImageCaptured() {
 
         ivCapture.setImageBitmap(identifiedBitmap)
@@ -142,6 +173,12 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
+    /**
+     * Show and saves in variables the value recognised.
+     *
+     * @param  MutableList<Classifier.Recognition> list of the recognition analisys.
+     */
     private fun showRecognizedResult(results: MutableList<Classifier.Recognition>) {
         runOnUiThread {
             if (results.isEmpty()) {
@@ -155,6 +192,11 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
+    /**
+     * Initializes Tensorflow classification.
+     *
+     */
     private fun initializeTensorClassifier() {
         initializeJob = GlobalScope.launch {
             try {
@@ -171,11 +213,18 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    /**
+     * Cancels initialization and close tensorflow classifer.
+     */
     private fun clearTensorClassifier() {
         initializeJob?.cancel()
         classifier?.close()
     }
 
+
+    /**
+     * Gets favorite currency from database.
+     */
     private fun getFavCurrency() {
         currencyViewModel.preferred.observe(this@IdentifyActivity, Observer { currency ->
             currency?.let {
@@ -189,6 +238,11 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+
+    /**
+     * Call Currency Exchange (currencyconverterapi.com) API
+     * to get the value exchanged if user has favorite currency.
+     */
     private fun getCurrencyExchange() {
         //DEBUG RESPONSE
         val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
@@ -227,6 +281,10 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
+    /**
+     * Get user current location if user gives her/his permission.
+     */
     private fun getLocation() {
 
         var locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
@@ -268,6 +326,11 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    /**
+     * Save image captured to internal storage.
+     *
+     * @return String absolute path of image saved.
+     */
     private fun saveImageToInternalStorage(): String {
 
         // Get the context wrapper instance
@@ -292,6 +355,13 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         return file.absolutePath
     }
 
+
+    /**
+     * Add estra information to activity before startint it.
+     *
+     * @param String key name
+     * @param Any? any value passed like Long, String, Boolean, Float, Double, Int, Parceable, Bitmap, ...
+     */
     private fun Intent.addExtra(key: String, value: Any?) {
         when (value) {
             is Long -> putExtra(key, value)
@@ -306,13 +376,26 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    //setting menu in action bar
+
+    /**
+     * Override onCreateOptionsMenu and sets menu in action bar.
+     *
+     * @param Menu?
+     *
+     * @return Boolean
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.identify_top_menu,menu)
         return super.onCreateOptionsMenu(menu)
     }
 
-    // actions on click menu items
+
+    /**
+     * Override onOptionsItemSelected and actions on click menu items.
+     *
+     * @param MenuItem selected, in that case only has actin save recognition.
+     *
+     */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_save -> {
             //Save recognition
@@ -341,6 +424,15 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
+    /**
+     * Override onRequestPermissionsResult requests permission to get user location.
+     *
+     * @param Int request code.
+     * @param permissions array of permissions.
+     * @param grantResults array.
+     *
+     */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_ACCESS_FINE_LOCATION) {
@@ -368,11 +460,21 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
+    /**
+     * override function onDestroy
+     * Destroys TensorFlow classifier.
+     */
     override fun onDestroy() {
         super.onDestroy()
         clearTensorClassifier()
     }
 
+
+    /**
+     * override function onClick from recycler view.
+     * Gets location.
+     */
     override fun onClick(v: View?) {
         when (v) {
             ibLocation -> {

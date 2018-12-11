@@ -9,7 +9,6 @@ import com.croin.croin.helpers.BottomNavigationViewHelper
 import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.Toast
-import java.util.*
 
 /**
  * @author Maricel Bros Maimó
@@ -19,6 +18,7 @@ import java.util.*
  */
 class MainActivity : AppCompatActivity() {
 
+    //Detects bottom menu item selected.
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
         toolbarManagement(item.itemId)
@@ -90,7 +90,6 @@ class MainActivity : AppCompatActivity() {
         val selectedItemId = navigation.selectedItemId
 
         if(R.id.navigation_home != selectedItemId) {
-
             //Select home item.
             val menuItem = navigation!!.menu.getItem(0)
             menuItem.isChecked = menuItem.itemId == R.id.navigation_home

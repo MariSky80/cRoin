@@ -6,11 +6,24 @@ import android.os.Handler
 import android.content.Intent
 import android.view.View
 
+
+/**
+ * @author Maricel Bros Maimó
+ *
+ * SplashActivity class.
+ *
+ */
+class Main
 class SplashActivity : AppCompatActivity() {
 
     private var mDelayHandler: Handler? = null
     private val SPLASH_DELAY: Long = 2000 //2 seconds
 
+    /**
+     * Overrides onWindowFocusChanged default function from activity behaviour.
+     *
+     * @param Boolean
+     */
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
@@ -18,6 +31,7 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
+    //Thead that starts MainActivity after finish the 2 seconds of delay.
     internal val mRunnable: Runnable = Runnable {
         if (!isFinishing) {
             val intent = Intent(applicationContext, MainActivity::class.java)
@@ -26,6 +40,10 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Overrides onCreate default function from activity behaviour.
+     *
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -37,7 +55,11 @@ class SplashActivity : AppCompatActivity() {
         mDelayHandler!!.postDelayed(mRunnable, SPLASH_DELAY)
     }
 
-    public override fun onDestroy() {
+    /**
+     * Overrides onDestroy default function from activity behaviour.
+     *
+     */
+    override fun onDestroy() {
 
         if (mDelayHandler != null) {
             mDelayHandler!!.removeCallbacks(mRunnable)
@@ -46,7 +68,10 @@ class SplashActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-
+    /**
+     * Makes full screen hidding objects like toolbar or menu bars.
+     *
+     */
     private fun hideSystemUI() {
         val decorView = window.decorView
         decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
