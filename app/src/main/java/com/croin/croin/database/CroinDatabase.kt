@@ -11,6 +11,9 @@ import com.croin.croin.database.entity.*
 import com.croin.croin.utilities.DATABASE_NAME
 import com.croin.croin.utilities.DATABASE_VERSION
 
+/**
+ * Entities and verion of the database
+ */
 @Database(
             entities = [
                 Calculation::class,
@@ -23,7 +26,9 @@ import com.croin.croin.utilities.DATABASE_VERSION
 
 @TypeConverters(DateTypeConverter::class)
 
-
+/**
+ * Class that connects and synchronizes to database and initializes all Dao files.
+ */
 abstract class CroinDatabase : RoomDatabase() {
 
     abstract fun calculationDao(): CalculationDao

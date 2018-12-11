@@ -4,7 +4,11 @@ import android.arch.persistence.room.*
 import com.croin.croin.database.entity.CurrencyRecognition
 
 @Dao
-
+/**
+ * Interface CurerncyRecognitionDao
+ * It's between repository and entity.
+ * And is used to make select queries to database.
+ */
 interface CurrencyRecognitionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(CurrencyRecognition: CurrencyRecognition)

@@ -5,7 +5,11 @@ import android.arch.persistence.room.*
 import com.croin.croin.database.entity.Currency
 
 @Dao
-
+/**
+ * Interface CurrencyDao
+ * It's between repository and entity.
+ * And is used to make select queries to database.
+ */
 interface CurrencyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(currency: Currency)

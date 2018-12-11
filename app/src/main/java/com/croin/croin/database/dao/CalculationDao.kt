@@ -5,6 +5,11 @@ import com.croin.croin.database.entity.Calculation
 
 @Dao
 
+/**
+ * Interface CalculationDao
+ * It's between repository and entity.
+ * And is used to make select queries to database.
+ */
 interface CalculationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(calculation: Calculation)

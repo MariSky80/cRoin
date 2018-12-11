@@ -13,6 +13,14 @@ import kotlinx.coroutines.launch
 import com.croin.croin.database.entity.Currency
 import kotlin.coroutines.CoroutineContext
 
+
+/**
+ * @author Maricel Bros Maimó
+ *
+ * CurrencyViewModel class.
+ * Connects reposytory with activities and fragments.
+ *
+ */
 class CurrencyViewModel(application: Application): AndroidViewModel(application) {
 
     private var parentJob = Job()
@@ -25,6 +33,10 @@ class CurrencyViewModel(application: Application): AndroidViewModel(application)
     val allCurrencies: LiveData<List<Currency>>
     val preferred: LiveData<Currency>
 
+
+    /**
+     * Initializes LiveData variables and gets all currencies and favorite registers.
+     */
     init {
         repository = CurrencyRepository(db.currencyDao())
         allCurrencies = repository.allCurrencies
@@ -32,18 +44,39 @@ class CurrencyViewModel(application: Application): AndroidViewModel(application)
     }
 
 
+    /**
+     * Update all currencies and set favorite to false.
+     */
     fun noFavorites() = scope.launch(Dispatchers.IO) {
         repository.noFavorites()
     }
 
+
+    /**
+     * Insert currency
+     *
+     * @param Currency
+     */
     fun insert(currency: Currency) = scope.launch(Dispatchers.IO) {
         repository.insert(currency)
     }
 
+
+    /**
+     * Delete currency
+     *
+     * @param Currency
+     */
     fun delete(currency: Currency) = scope.launch(Dispatchers.IO) {
         repository.delete(currency)
     }
 
+
+    /**
+     * Update currency
+     *
+     * @param Currency
+     */
     fun update(currency: Currency) = scope.launch(Dispatchers.IO) {
         repository.updated(currency)
     }

@@ -14,23 +14,38 @@ import com.croin.croin.R
 import com.croin.croin.database.entity.Recognition
 
 
-
+/**
+ * @author Maricel Bros Maimó
+ *
+ * Recognitoin Adapter class.
+ * Class to show a list of recognitions with a recycler view.
+ *
+ */
 class RecognitionAdapter internal constructor(context: Context, listener: OnItemClickListener) : RecyclerView.Adapter<RecognitionAdapter.RecognitonViewHolder>() {
 
 
     private var listenerDeleteButton: OnItemClickListener = listener
     private var listenerLocationButton: OnItemClickListener = listener
+
+    /**
+     * Interfave OnTiemClickListener that creates listeners from itemView items.
+     */
     interface OnItemClickListener {
         fun onDeleteClick(recognition: Recognition)
         fun onLocationClick(recognition: Recognition)
         //fun onItemClick(recognition: Recognition)
     }
 
-
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var recognitions = emptyList<Recognition>()
     private val cContext = context
 
+
+    /**
+     * Inner class that contains each recognition itemView.
+     *
+     * @param RecyclerView.itemView(itemView)
+     */
     inner class RecognitonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val recognitionItemViewName: TextView = itemView.findViewById(R.id.tvName)
         val recognitionItemViewDate: TextView = itemView.findViewById(R.id.tvDate)
@@ -49,11 +64,29 @@ class RecognitionAdapter internal constructor(context: Context, listener: OnItem
         }
     }
 
+
+    /**
+     * Overrides function onCreateViewHolder from system.
+     *
+     * @param ViewGroup
+     * @param Int viewType
+     *
+     * @return RecognitionViewHolder
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecognitonViewHolder {
         val itemView = inflater.inflate(R.layout.recognition_item, parent, false)
         return RecognitonViewHolder(itemView)
     }
 
+
+    /**
+     * Overrides function onBindViewHolder from system.
+     * Binds information of current item from viewHolder.
+     *
+     * @param RecognitonViewHolder
+     * @param Int position
+     *
+     */
     override fun onBindViewHolder(holder: RecognitonViewHolder, position: Int) {
         val current = recognitions[position]
 
@@ -72,10 +105,21 @@ class RecognitionAdapter internal constructor(context: Context, listener: OnItem
 
     }
 
+
+    /**
+     * Set recognitions to this.recognitions.
+     *
+     * @param List<Recognition> list of recognitions entities.
+     *
+     */
     internal fun setRecognitions(recognitions: List<Recognition>) {
         this.recognitions = recognitions
         notifyDataSetChanged()
     }
 
+
+    /**
+     * Override function getItemCount from system.
+     */
     override fun getItemCount() = recognitions.size
 }

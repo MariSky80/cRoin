@@ -5,7 +5,11 @@ import android.arch.persistence.room.*
 import com.croin.croin.database.entity.Recognition
 
 @Dao
-
+/**
+ * Interface RecognitionDao
+ * It's between repository and entity.
+ * And is used to make select queries to database.
+ */
 interface RecognitionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(recogniton: Recognition)
