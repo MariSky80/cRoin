@@ -34,6 +34,14 @@
     <string name="dialog_fav_title">Favourite</string>
     <string name="dialog_fav_description">Are you sure to change favourite state from </string>
 
+    <!-- History fragment -->
+    <string name="date_name">Date</string>
+    <string name="date_content_description">Register date</string>
+    <string name="quantity_name">Quantity detected</string>
+    <string name="value">Value: </string>
+    <string name="dialog_open_location">Location</string>
+    <string name="dialog_open_location_description">Do you want to open this location with Google Maps?</string>
+
     <!-- ACTIVITIES -->
     <!-- Splash Screen -->
     <string name="splash_description">Splash cRoin logo</string>

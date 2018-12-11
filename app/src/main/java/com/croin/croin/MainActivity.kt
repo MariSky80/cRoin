@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import com.croin.croin.helpers.BottomNavigationViewHelper
 import android.support.v4.app.Fragment
 import android.view.View
+import android.widget.Toast
 import java.util.*
 
 /**
@@ -66,7 +67,12 @@ class MainActivity : AppCompatActivity() {
 
         when(receivedFragment) {
             null -> replaceFragment(HomeFragment())
-            "History" -> replaceFragment(HistoryFragment())
+            "History" -> {
+                toolbar_main!!.title = getString(R.string.title_historical)
+                toolbar_main.visibility = View.VISIBLE
+                replaceFragment(HistoryFragment())
+                Toast.makeText(this,getString(R.string.identify_saved), Toast.LENGTH_LONG).show()
+            }
         }
 
 

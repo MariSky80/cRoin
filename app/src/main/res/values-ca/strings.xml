@@ -33,6 +33,14 @@
     <string name="dialog_fav_title">Preferit</string>
     <string name="dialog_fav_description">Estàs segur de canviar l\'estat de </string>
 
+    <!-- History fragment -->
+    <string name="date_name">Data</string>
+    <string name="date_content_description">Data registre</string>
+    <string name="quantity_name">Quantitat detectada</string>
+    <string name="value">Valor: </string>
+    <string name="dialog_open_location">Localització</string>
+    <string name="dialog_open_location_description">Vols obrir la locatlització amb Google Maps?</string>
+
     <!-- ACTIVITIES -->
     <!-- Splash Screen -->
     <string name="splash_description">Splash cRoin logo</string>

@@ -33,6 +33,14 @@
     <string name="dialog_fav_title">Favorito</string>
     <string name="dialog_fav_description">Estás seguro de modificar el estado de </string>
 
+    <!-- History fragment -->
+    <string name="date_name">Fecha</string>
+    <string name="date_content_description">Fecha registro</string>
+    <string name="quantity_name">Cantidad detectada</string>
+    <string name="value">Valor: </string>
+    <string name="dialog_open_location">Localización</string>
+    <string name="dialog_open_location_description">Quieres abrir esta localización con Google Maps?</string>
+
     <!-- ACTIVITIES -->
     <!-- Splash Screen -->
     <string name="splash_description">Splash cRoin logo</string>

@@ -10,6 +10,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -23,6 +24,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import com.croin.croin.database.entity.Currency
 import com.croin.croin.database.entity.Recognition
@@ -69,7 +71,7 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
 
     private var classifier: Classifier? = null
     private var initializeJob: Job? = null
-    private var identifiedBitmap: Bitmap? = null
+    private var  identifiedBitmap: Bitmap? = null
     private var coinDetected = 0
     private var currencyExchange = 0f
     private var favCurrency: Currency? = null
@@ -268,32 +270,26 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun saveImageToInternalStorage(): String {
 
-        // Get the bitmap from drawable object
-        val bitmap = identifiedBitmap
-
         // Get the context wrapper instance
         val wrapper = ContextWrapper(applicationContext)
 
         // The bellow line return a directory in internal storage
-        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
-
+        var file = wrapper.getDir( "images", Context.MODE_PRIVATE)
 
         // Create a file to save the image
-        var fileName = "${UUID.randomUUID()}.jpg"
-        file = File(file, fileName)
+        file = File(file, "${UUID.randomUUID()}.jpg")
 
         try {
             val stream: OutputStream = FileOutputStream(file)
-            bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            (ivCapture.drawable as BitmapDrawable).bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
             stream.flush()
             stream.close()
         } catch (e: IOException){
-            //e.printStackTrace()
             Log.e("ERROR", "Error saving image!")
         }
 
         // Return the saved image uri
-        return fileName
+        return file.absolutePath
     }
 
     private fun Intent.addExtra(key: String, value: Any?) {
@@ -319,21 +315,18 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
     // actions on click menu items
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_save -> {
-            //Save image into internal storage
-            val imageName = saveImageToInternalStorage()
-
             //Save recognition
             var recognition = Recognition(null,
-                    tvName.text as String,
-                    tvDescription.text as String,
-                    imageName,
+                    etName.text.toString(),
+                    etDescription.text.toString(),
+                    saveImageToInternalStorage(),
                     coinDetected.toDouble(),
                     currentLocation,
                     Calendar.getInstance().time,
                     Calendar.getInstance().time
             )
             recogintionViewModel.insert(recognition)
-            Toast.makeText(this,getString(R.string.identify_saved),Toast.LENGTH_LONG).show()
+
 
             val intentMain = Intent(this, MainActivity::class.java)
             intentMain.addExtra("fragment", "History")

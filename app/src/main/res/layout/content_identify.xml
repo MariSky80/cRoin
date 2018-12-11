@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvDetection" />
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -76,8 +76,7 @@
         android:contentDescription="@string/identification_name_description"
         android:ems="10"
         android:inputType="textPersonName"
-        android:labelFor="@id/tvName"
-        android:text="@string/identification_name"
+        android:labelFor="@id/tvDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCurrencyExchange" />
 
@@ -93,7 +92,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
     <EditText
         android:id="@+id/etDescription"
@@ -101,10 +100,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
+        android:contentDescription="@string/identification_comment_description"
         android:ems="10"
         android:inputType="textMultiLine"
         android:labelFor="@id/tvDescription"
-        android:text="@string/identification_comment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etName" />
 

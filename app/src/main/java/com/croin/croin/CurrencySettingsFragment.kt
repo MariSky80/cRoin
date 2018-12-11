@@ -60,7 +60,7 @@ class CurrencySettingsFragment : Fragment(), View.OnClickListener, AdapterView.O
         aCurrencies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spCurrencies.adapter = aCurrencies
 
-        spCurrencies.setOnItemSelectedListener(this)
+        spCurrencies.onItemSelectedListener = this
 
         //RecyclerView currencies list
         val recyclerView = viewCurrency.findViewById<RecyclerView>(R.id.rvCurrency)

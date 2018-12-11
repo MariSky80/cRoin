@@ -1,22 +1,28 @@
 package com.croin.croin.adapters
 
 import android.content.Context
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import com.croin.croin.R
 import com.croin.croin.database.entity.Recognition
+
 
 
 class RecognitionAdapter internal constructor(context: Context, listener: OnItemClickListener) : RecyclerView.Adapter<RecognitionAdapter.RecognitonViewHolder>() {
 
 
     private var listenerDeleteButton: OnItemClickListener = listener
+    private var listenerLocationButton: OnItemClickListener = listener
     interface OnItemClickListener {
         fun onDeleteClick(recognition: Recognition)
+        fun onLocationClick(recognition: Recognition)
         //fun onItemClick(recognition: Recognition)
     }
 
@@ -27,12 +33,18 @@ class RecognitionAdapter internal constructor(context: Context, listener: OnItem
 
     inner class RecognitonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val recognitionItemViewName: TextView = itemView.findViewById(R.id.tvName)
-        //val recognitionItemClick: ImageButton = itemView.findViewById(R.id.ibFav)
+        val recognitionItemViewDate: TextView = itemView.findViewById(R.id.tvDate)
+        val recognitionItemViewQuantity: TextView = itemView.findViewById(R.id.tvQuantity)
+        val recognitionImageView: ImageView = itemView.findViewById(R.id.ivThumbnail)
 
         private val recognitionItemDelete: ImageButton = itemView.findViewById(R.id.ibDelete)
+        val recognitionItemLocation: ImageButton = itemView.findViewById(R.id.ibLocation)
         fun bind(recognition: Recognition, listener: OnItemClickListener) {
             recognitionItemDelete.setOnClickListener {
                 listener.onDeleteClick(recognition)
+            }
+            recognitionItemLocation.setOnClickListener {
+                listener.onLocationClick(recognition)
             }
         }
     }
@@ -47,7 +59,16 @@ class RecognitionAdapter internal constructor(context: Context, listener: OnItem
 
         holder.recognitionItemViewName.text = current.name
 
+        holder.recognitionItemViewDate.text = DateFormat.format("dd/MM/yyyy", current.createdAt).toString()
+        holder.recognitionImageView.setImageURI(Uri.parse(current.image))
+        holder.recognitionItemViewQuantity.text = "${cContext.getString(R.string.value)} ${current.quantity.toString()} €"
+        current.location?: run {
+            holder.recognitionItemLocation.setImageResource(R.drawable.ic_map_marker_solid_disabled)
+            holder.recognitionItemLocation.isEnabled = false
+        }
+        holder.bind(current, listenerLocationButton)
         holder.bind(current, listenerDeleteButton)
+
 
     }
 
