@@ -1,41 +1,47 @@
 package com.croin.croin
 
+import android.content.res.Resources
+import android.net.Uri
+import android.provider.MediaStore
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.runner.AndroidJUnit4
-import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onData
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.ViewAction
-import android.support.test.espresso.action.ViewActions
-import android.support.test.espresso.contrib.RecyclerViewActions
-import android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import android.support.test.espresso.matcher.CursorMatchers
-import android.support.test.espresso.matcher.RootMatchers.isDialog
-import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerViewAccessibilityDelegate
 import com.croin.croin.network.CurrencyData
 import org.hamcrest.CoreMatchers.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.regex.Pattern.matches
+import android.support.test.espresso.UiController
+import android.support.test.espresso.action.ViewActions.scrollTo
+import android.support.test.espresso.contrib.RecyclerViewActions
+import android.support.test.espresso.core.internal.deps.guava.io.ByteStreams
+import android.support.test.runner.intent.IntentCallback
+import android.support.test.runner.intent.IntentMonitorRegistry
+import android.support.v7.widget.RecyclerView
+import android.view.View
+import com.croin.croin.adapters.CurrencyAdapter
+import java.util.regex.Matcher
+
 
 @RunWith(AndroidJUnit4::class)
 class AddCurrencyTest{
     @Rule
     @JvmField
-    public val rule = ActivityTestRule(MainActivity::class.java)
+    val rule = ActivityTestRule(MainActivity::class.java)
 
-    private var CURRENCY_SELECTED = "UNITED STATES DOLLAR"
+    var CURRENCY_SELECTED: CurrencyData = CurrencyData("Barbadian Dollar", "BBD", "$" )
+    var CURRENCY_FAVORITE: CurrencyData = CurrencyData("Japanese Yen", "JPY", "¥" )
 
     /**
-     * Enter currency fragment, select first currency and add.
+     * Enter to the currency fragment and select Barbarian Dollar currency and add to list
+     * Then mark as favourite
      */
     @Test
-    fun enterFragmentCurrency() {
+    fun addCurrencyToList() {
 
         //Select currency section
         onView((withId(R.id.navigation_currency)))
@@ -45,6 +51,10 @@ class AddCurrencyTest{
         onView(withId(R.id.spCurrencies))
                 .perform(click())
 
+        //Select currency (for example American US)
+        onData(allOf(`is`(instanceOf(CurrencyData::class.java)),
+                `is`(CURRENCY_SELECTED)))
+                .perform(click())
 
         //Click add currency
         onView(withId(R.id.ibAddCurrency))
@@ -54,21 +64,22 @@ class AddCurrencyTest{
         onView(withId(android.R.id.button1))
                 .perform(click())
 
+        //Click to spinner to select currency
+        onView(withId(R.id.spCurrencies))
+                .perform(click())
 
+        //Select currency (for example American US)
+        onData(allOf(`is`(instanceOf(CurrencyData::class.java)),
+                `is`(CURRENCY_FAVORITE)))
+                .perform(click())
+
+        //Click add currency
+        onView(withId(R.id.ibAddCurrency))
+                .perform(click())
+
+        //Click yes to dialog
+        onView(withId(android.R.id.button1))
+                .perform(click())
 
     }
-
-    /**
-     * Marc added currency to favorite.
-     */
-    @Test
-    fun selectFavorite() {
-//        onView(withId(R.id.rvRecognition)).perform(
-//                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, onView((withId(R.id.ibFav)))
-//                        .perform(click()) as ViewAction))
-//
-//        )
-    }
-
-
 }
