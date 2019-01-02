@@ -65,8 +65,8 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         private const val IMAGE_STD = 128f
         private const val INPUT_NAME = "input"
         private const val OUTPUT_NAME = "final_result"
-        private const val MODEL_FILE = "file:///android_asset/optimized_coins_graph.pb"
-        private const val LABEL_FILE = "file:///android_asset/coins_labels.txt"
+        private const val MODEL_FILE = "file:///android_asset/frozen_inference_graph.pb"
+        private const val LABEL_FILE = "file:///android_asset/frozen_inference_labels.txt"
         private const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 100
     }
 
@@ -165,7 +165,10 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         runOnUiThread {
             classifier?.let {
                 try {
-                    showRecognizedResult(classifier!!.recognizeImage(identifiedBitmap))
+                    val image = identifiedBitmap
+                image?.let {
+                        showRecognizedResult(classifier!!.recognizeImage(image))
+                    }
                 } catch (e: java.lang.RuntimeException) {
                     Log.e(TAG, "Crashing due to classification.closed() before the recognizer finishes! " + e)
                 }
@@ -179,7 +182,7 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
      *
      * @param  MutableList<Classifier.Recognition> list of the recognition analisys.
      */
-    private fun showRecognizedResult(results: MutableList<Classifier.Recognition>) {
+    private fun showRecognizedResult(results: List<Classifier.Recognition>) {
         runOnUiThread {
             if (results.isEmpty()) {
                 coinDetected = 0

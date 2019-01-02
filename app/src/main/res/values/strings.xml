@@ -65,6 +65,9 @@
     <string name="location_saved">You location has been saved!</string>
     <string name="identify_saved">You recognition has been saved correctly.</string>
 
+    <!-- Camera Activiy -->
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+
     <!-- DIALOG GENERIC -->
     <string name="dialog_cancel">CANCEL</string>
     <string name="dialog_no">NO</string>
@@ -75,6 +78,8 @@
 
     <!-- Permissons -->
     <string name="permission_denied">Permission denied</string>
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="request_permission">This sample needs camera permission.</string>
 
 </resources>
 
