@@ -41,6 +41,22 @@ import java.util.*
  */
 class DetectorActivity : CameraActivity(), OnImageAvailableListener {
 
+    companion object {
+        private val TF_OD_API_INPUT_SIZE = 300
+        private val TF_OD_API_MODEL_FILE = "file:///android_asset/frozen_inference_croin_graph.pb"
+        private val TF_OD_API_LABELS_FILE = "file:///android_asset/croin_labels.txt"
+
+        // Minimum detection confidence to track a detection.
+        private val MINIMUM_CONFIDENCE_TF_OD_API = 0.13f
+
+        private val MAINTAIN_ASPECT = false
+
+        private val DESIRED_PREVIEW_SIZE = Size(640, 480)
+
+        private val SAVE_PREVIEW_BITMAP = false
+        private val TEXT_SIZE_DIP = 10f
+    }
+
     private var sensorOrientation: Int? = null
 
     private var detector: Classifier? = null
@@ -206,6 +222,7 @@ class DetectorActivity : CameraActivity(), OnImageAvailableListener {
                     Log.i(ImageUtils.TAG,"Running detection on image $currTimestamp")
                     val startTime = SystemClock.uptimeMillis()
                     val results = detector!!.recognizeImage(croppedBitmap!!)
+
                     lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime
 
                     cropCopyBitmap = Bitmap.createBitmap(croppedBitmap!!)
@@ -227,6 +244,7 @@ class DetectorActivity : CameraActivity(), OnImageAvailableListener {
                             cropToFrameTransform!!.mapRect(location)
                             result.location = location
                             mappedRecognitions.add(result)
+                            Log.i(ImageUtils.TAG, "GUARDAR DADA: ${results[0].title}")
                         }
                     }
 
@@ -242,19 +260,4 @@ class DetectorActivity : CameraActivity(), OnImageAvailableListener {
         detector!!.enableStatLogging(debug)
     }
 
-    companion object {
-        private val TF_OD_API_INPUT_SIZE = 300
-        private val TF_OD_API_MODEL_FILE = "file:///android_asset/frozen_inference_graph.pb"
-        private val TF_OD_API_LABELS_FILE = "file:///android_asset/croin_labels.txt"
-
-        // Minimum detection confidence to track a detection.
-        private val MINIMUM_CONFIDENCE_TF_OD_API = 0.6f
-
-        private val MAINTAIN_ASPECT = false
-
-        private val DESIRED_PREVIEW_SIZE = Size(640, 480)
-
-        private val SAVE_PREVIEW_BITMAP = false
-        private val TEXT_SIZE_DIP = 10f
-    }
 }

@@ -151,9 +151,11 @@ class MultiBoxTracker(private val context: Context) {
             canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint)
 
             val labelString = if (!TextUtils.isEmpty(recognition.title))
-                String.format("%s %.2f", recognition.title, recognition.detectionConfidence)
+                //String.format("%s %.2f", recognition.title, recognition.detectionConfidence)
+                String.format("%s", recognition.title)
             else
                 String.format("%.2f", recognition.detectionConfidence)
+
             borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.bottom, labelString)
         }
     }

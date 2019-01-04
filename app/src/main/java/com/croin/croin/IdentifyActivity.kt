@@ -59,23 +59,13 @@ import java.util.*
 class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
-        private const val TAG = "IdentifyActivity"
-        private const val INPUT_SIZE_TF = 224
-        private const val IMAGE_MEAN = 128
-        private const val IMAGE_STD = 128f
-        private const val INPUT_NAME = "input"
-        private const val OUTPUT_NAME = "final_result"
-        private const val MODEL_FILE = "file:///android_asset/frozen_inference_graph.pb"
-        private const val LABEL_FILE = "file:///android_asset/frozen_inference_labels.txt"
         private const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 100
     }
 
     private lateinit var currencyViewModel: CurrencyViewModel
     private lateinit var recogintionViewModel: RecognitionViewModel
 
-    private var classifier: Classifier? = null
-    private var initializeJob: Job? = null
-    private var  identifiedBitmap: Bitmap? = null
+    private var identifiedBitmap: Bitmap? = null
     private var coinDetected = 0
     private var currencyExchange = 0f
     private var favCurrency: Currency? = null
@@ -100,6 +90,10 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
 
         identifiedBitmap = getExtra("capture")
 
+        coinDetected = 100 // agafar-ho de DetectorCapture.
+        tvDetection.text = "${getString(R.string.value_identified)}: ${coinDetected.toString()} €"
+        getFavCurrency()
+
         ibLocation.setOnClickListener(this)
 
         //CurrencyViewModel
@@ -107,9 +101,6 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
 
         //RecognitionViewModel
         recogintionViewModel = ViewModelProviders.of(this).get(RecognitionViewModel::class.java)
-
-        //Init TensorFlow Classifier
-        initializeTensorClassifier()
 
     }
 
@@ -136,92 +127,6 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
      */
     inline fun <reified T> Activity.getExtra(extra: String): T? {
         return intent.extras?.get(extra) as? T?
-    }
-
-
-    /**
-     * Starts thread startint tensorflow recognitions.
-     */
-    private fun onImageCaptured() {
-
-        ivCapture.setImageBitmap(identifiedBitmap)
-
-        val outWidthTF: Int
-        val outHeightTF: Int
-        val inWidthTF: Int = identifiedBitmap!!.width
-        val inHeightTF: Int = identifiedBitmap!!.height
-        if(inWidthTF > inHeightTF) {
-            outWidthTF = INPUT_SIZE_TF
-            outHeightTF = (inHeightTF * INPUT_SIZE_TF) / inWidthTF
-        } else {
-            outHeightTF = INPUT_SIZE_TF
-            outWidthTF = (inWidthTF * INPUT_SIZE_TF) / inHeightTF
-        }
-
-        identifiedBitmap = Bitmap.createScaledBitmap(identifiedBitmap, outWidthTF, outHeightTF, false)
-
-
-
-        runOnUiThread {
-            classifier?.let {
-                try {
-                    val image = identifiedBitmap
-                image?.let {
-                        showRecognizedResult(classifier!!.recognizeImage(image))
-                    }
-                } catch (e: java.lang.RuntimeException) {
-                    Log.e(TAG, "Crashing due to classification.closed() before the recognizer finishes! " + e)
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Show and saves in variables the value recognised.
-     *
-     * @param  MutableList<Classifier.Recognition> list of the recognition analisys.
-     */
-    private fun showRecognizedResult(results: List<Classifier.Recognition>) {
-        runOnUiThread {
-            if (results.isEmpty()) {
-                coinDetected = 0
-                tvDetection.text = getString(R.string.not_found)
-            } else {
-                coinDetected = results[0].title.toInt()
-                tvDetection.text = "${getString(R.string.value_identified)}: ${coinDetected.toString()} €"
-                getFavCurrency()
-            }
-        }
-    }
-
-
-    /**
-     * Initializes Tensorflow classification.
-     *
-     */
-    private fun initializeTensorClassifier() {
-        initializeJob = GlobalScope.launch {
-            try {
-                classifier = TensorFlowImageClassifier.create(
-                        assets, MODEL_FILE, LABEL_FILE, INPUT_SIZE_TF, INPUT_SIZE_TF,
-                        IMAGE_MEAN, IMAGE_STD, INPUT_NAME, OUTPUT_NAME)
-                runOnUiThread {
-                    onImageCaptured()
-                }
-            } catch (e: Exception) {
-                throw RuntimeException("Error initializing TensorFlow!", e)
-            }
-        }
-    }
-
-
-    /**
-     * Cancels initialization and close tensorflow classifer.
-     */
-    private fun clearTensorClassifier() {
-        initializeJob?.cancel()
-        classifier?.close()
     }
 
 
@@ -461,16 +366,6 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
-    }
-
-
-    /**
-     * override function onDestroy
-     * Destroys TensorFlow classifier.
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        clearTensorClassifier()
     }
 
 
