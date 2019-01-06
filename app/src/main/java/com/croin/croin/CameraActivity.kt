@@ -53,6 +53,35 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
 
         private val PERMISSION_CAMERA = Manifest.permission.CAMERA
         private val PERMISSION_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
+
+
+        fun setTotal(intent: Intent, total: Float) {
+            intent.addExtra("detected", total)
+        }
+
+        fun setBitmap(intent: Intent, bitmap: Bitmap) {
+            intent.addExtra("capture", bitmap)
+        }
+
+        /**
+         * Add estra information to activity before startint it.
+         *
+         * @param String key name
+         * @param Any? any value passed like Long, String, Boolean, Float, Double, Int, Parceable, Bitmap, ...
+         */
+        private fun Intent.addExtra(key: String, value: Any?) {
+            when (value) {
+                is Long -> putExtra(key, value)
+                is String -> putExtra(key, value)
+                is Boolean -> putExtra(key, value)
+                is Float -> putExtra(key, value)
+                is Double -> putExtra(key, value)
+                is Int -> putExtra(key, value)
+                is Parcelable -> putExtra(key, value)
+                is Bitmap -> putExtra(key, value)
+                //Add other types when needed
+            }
+        }
     }
 
     var isDebug = false
@@ -73,7 +102,6 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
     private var imageConverter: Runnable? = null
 
     private var lastPreviewFrame: ByteArray? = null
-    private var lastBitmap: Bitmap? = null
 
 
     protected val screenOrientation: Int
@@ -418,14 +446,10 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
                 val dialogClickListener = DialogInterface.OnClickListener{ _, which ->
                     when(which){
                         DialogInterface.BUTTON_POSITIVE -> {
-
-                            lastBitmap?.let {9
-                                val intent = Intent(baseContext, IdentifyActivity::class.java)
-                                intent.addExtra("capture", lastBitmap)
-                                intent.addExtra("detected", 100.25f)
-                                startActivity(intent)
-                            }
-
+                            val intentIdentifier = Intent(this, IdentifyActivity::class.java)
+                            setTotal(intentIdentifier, DetectorActivity.total.toFloat())
+                            setBitmap(intentIdentifier, DetectorActivity.lastBitmap)
+                            startActivity(intentIdentifier)
                         }
                     }
                 }
@@ -442,25 +466,6 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
     }
 
 
-    /**
-     * Add estra information to activity before startint it.
-     *
-     * @param String key name
-     * @param Any? any value passed like Long, String, Boolean, Float, Double, Int, Parceable, Bitmap, ...
-     */
-    private fun Intent.addExtra(key: String, value: Any?) {
-        when (value) {
-            is Long -> putExtra(key, value)
-            is String -> putExtra(key, value)
-            is Boolean -> putExtra(key, value)
-            is Float -> putExtra(key, value)
-            is Double -> putExtra(key, value)
-            is Int -> putExtra(key, value)
-            is Parcelable -> putExtra(key, value)
-            is Bitmap -> putExtra(key, value)
-            //Add other types when needed
-        }
-    }
 
 }
 

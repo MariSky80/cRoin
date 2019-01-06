@@ -17,14 +17,19 @@
 package com.croin.croin
 
 
+import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.*
 import android.graphics.Bitmap.Config
 import android.graphics.Paint.Style
 import android.media.ImageReader.OnImageAvailableListener
+import android.os.Parcelable
 import android.os.SystemClock
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.util.Size
 import android.util.TypedValue
+import android.view.View
 import android.widget.Toast
 import com.croin.croin.tensorflow.Classifier
 import com.croin.croin.tensorflow.OverlayView
@@ -32,6 +37,7 @@ import com.croin.croin.tensorflow.TensorFlowObjectDetectionAPIModel
 import com.croin.croin.tensorflow.env.BorderedText
 import com.croin.croin.tensorflow.env.ImageUtils
 import com.croin.croin.tensorflow.tracking.MultiBoxTracker
+import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.IOException
 import java.util.*
 
@@ -47,7 +53,7 @@ class DetectorActivity : CameraActivity(), OnImageAvailableListener {
         private val TF_OD_API_LABELS_FILE = "file:///android_asset/croin_labels.txt"
 
         // Minimum detection confidence to track a detection.
-        private val MINIMUM_CONFIDENCE_TF_OD_API = 0.13f
+        private val MINIMUM_CONFIDENCE_TF_OD_API = 0.25f
 
         private val MAINTAIN_ASPECT = false
 
@@ -55,6 +61,9 @@ class DetectorActivity : CameraActivity(), OnImageAvailableListener {
 
         private val SAVE_PREVIEW_BITMAP = false
         private val TEXT_SIZE_DIP = 10f
+
+        lateinit var lastBitmap: Bitmap
+        var total: Double = 0.0
     }
 
     private var sensorOrientation: Int? = null
@@ -80,6 +89,8 @@ class DetectorActivity : CameraActivity(), OnImageAvailableListener {
     private var borderedText: BorderedText? = null
 
     lateinit var trackingOverlay: OverlayView
+
+
 
     override val desiredPreviewFrameSize: Size
         get() = DESIRED_PREVIEW_SIZE
@@ -236,6 +247,7 @@ class DetectorActivity : CameraActivity(), OnImageAvailableListener {
 
                     val mappedRecognitions = LinkedList<Classifier.Recognition>()
 
+                    total = 0.0
                     for (result in results) {
                         val location = result.location
                         if (location != null && result.confidence >= minimumConfidence) {
@@ -244,9 +256,17 @@ class DetectorActivity : CameraActivity(), OnImageAvailableListener {
                             cropToFrameTransform!!.mapRect(location)
                             result.location = location
                             mappedRecognitions.add(result)
-                            Log.i(ImageUtils.TAG, "GUARDAR DADA: ${results[0].title}")
+                            //Calcular total
+                            val valueIdentified = result.title.toDouble() / 100
+                            total += valueIdentified
                         }
                     }
+
+                    lastBitmap = Bitmap.createBitmap(croppedBitmap!!)
+
+                    this@DetectorActivity.runOnUiThread(java.lang.Runnable {
+                        tvTotalIdentified.text = "%.2f €".format(total)
+                    })
 
                     tracker!!.trackResults(mappedRecognitions, luminanceCopy!!, currTimestamp)
                     trackingOverlay.postInvalidate()

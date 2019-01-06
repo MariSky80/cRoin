@@ -17,18 +17,21 @@
 
         <TextView
             android:id="@+id/tvTotalIdentified"
-            android:layout_width="316dp"
-            android:layout_height="29dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="48dp"
-            android:text="Total: XXX.XX €"
+            android:layout_width="121dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="24dp"
+            android:background="@color/colorPrimaryDark"
+            android:contentDescription="@string/total_identified_description"
+            android:paddingLeft="20dp"
+            android:text="@string/total_identified_text"
             android:textColor="@color/colorWhite"
-            android:textSize="16sp"
+            android:textSize="26sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.789"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/ibCapture" />
 
         <ImageButton
             android:id="@+id/ibCapture"

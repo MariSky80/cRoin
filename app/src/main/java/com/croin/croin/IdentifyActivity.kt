@@ -86,19 +86,23 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
         toolbar.setDisplayHomeAsUpEnabled(true)
 
         identifiedBitmap = getExtra("capture")
+        ivCapture.setImageBitmap(identifiedBitmap)
 
         val detected: Float? = getExtra("detected")
-        detected?.let {
-            coinDetected = detected
-        }
-
-        tvDetection.text = coinDetected.toString()
-        getFavCurrency()
 
         ibLocation.setOnClickListener(this)
 
         //CurrencyViewModel
         currencyViewModel = ViewModelProviders.of(this).get(CurrencyViewModel::class.java)
+
+        detected?.let {
+            coinDetected = detected
+            tvDetection.text = "${getString(R.string.value_identified)}: ${coinDetected.toString()} €"
+            getFavCurrency()
+        } ?: run {
+            tvDetection.text = getString(R.string.not_found)
+        }
+
 
         //RecognitionViewModel
         recogintionViewModel = ViewModelProviders.of(this).get(RecognitionViewModel::class.java)

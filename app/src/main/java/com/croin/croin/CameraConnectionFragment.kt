@@ -356,7 +356,6 @@ class CameraConnectionFragment : Fragment {
         } catch (e: NullPointerException) {
             // Currently an NPE is thrown when the Camera2API is used but not supported on the
             // device this code runs.
-            // TODO(andrewharp): abstract ErrorDialog/RuntimeException handling out into new method and
             // reuse throughout app.
             ErrorDialog.newInstance(getString(R.string.camera_error))
                     .show(childFragmentManager, FRAGMENT_DIALOG)

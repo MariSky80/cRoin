@@ -66,6 +66,8 @@
     <string name="identify_saved">You recognition has been saved correctly.</string>
 
     <!-- Camera Activiy -->
+    <string name="total_identified_text">0.00 €</string>
+    <string name="total_identified_description">Show total identified</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     <string name="dialog_capture_title">Take picture</string>
     <string name="dialog_capture_description">Are you sure to take the picture of this detection?</string>

@@ -65,6 +65,8 @@
     <string name="identify_saved">La identificació s\'ha guardat correctamnet.</string>
 
     <!-- Camera Activiy -->
+    <string name="total_identified_text">0.00 €</string>
+    <string name="total_identified_description">Mostra total identificat</string>
     <string name="camera_error">Aquest dispositiu no suporta l\'API de Camera2.</string>
     <string name="dialog_capture_title">Fotografiar</string>
     <string name="dialog_capture_description">Estàs segur de capturar aquesta identificació?</string>
