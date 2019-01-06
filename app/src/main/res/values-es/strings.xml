@@ -64,6 +64,11 @@
     <string name="location_saved">Tu localización se ha guardado correctamente.</string>
     <string name="identify_saved">La identificación se ha guardado correctamnete.</string>
 
+    <!-- Camera Activiy -->
+    <string name="camera_error">Este dispositivo no soporta la API de Camera2 API.</string>
+    <string name="dialog_capture_title">Fotografiar</string>
+    <string name="dialog_capture_description">¿Estás seguro de capturar esta detección?</string>
+
     <!-- DIALOG GENERIC -->
     <string name="dialog_cancel">CANCELAR</string>
     <string name="dialog_no">NO</string>

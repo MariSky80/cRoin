@@ -67,6 +67,8 @@
 
     <!-- Camera Activiy -->
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="dialog_capture_title">Take picture</string>
+    <string name="dialog_capture_description">Are you sure to take the picture of this detection?</string>
 
     <!-- DIALOG GENERIC -->
     <string name="dialog_cancel">CANCEL</string>

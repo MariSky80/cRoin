@@ -30,14 +30,11 @@ import com.croin.croin.database.entity.Recognition
 import com.croin.croin.models.CurrencyViewModel
 import com.croin.croin.models.RecognitionViewModel
 import com.croin.croin.network.CurrencyService
-import com.croin.croin.tensorflow.Classifier
-import com.croin.croin.tensorflow.TensorFlowImageClassifier
 import com.croin.croin.utilities.URL_CURRENCY_CONVERTER
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.android.synthetic.main.activity_identify.*
 import kotlinx.android.synthetic.main.content_identify.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
@@ -66,7 +63,7 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var recogintionViewModel: RecognitionViewModel
 
     private var identifiedBitmap: Bitmap? = null
-    private var coinDetected = 0
+    private var coinDetected = 0.0f
     private var currencyExchange = 0f
     private var favCurrency: Currency? = null
     private var currentLocation: String? = null
@@ -90,8 +87,12 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
 
         identifiedBitmap = getExtra("capture")
 
-        coinDetected = 100 // agafar-ho de DetectorCapture.
-        tvDetection.text = "${getString(R.string.value_identified)}: ${coinDetected.toString()} €"
+        val detected: Float? = getExtra("detected")
+        detected?.let {
+            coinDetected = detected
+        }
+
+        tvDetection.text = coinDetected.toString()
         getFavCurrency()
 
         ibLocation.setOnClickListener(this)
@@ -311,7 +312,7 @@ class IdentifyActivity : AppCompatActivity(), View.OnClickListener {
                     etName.text.toString(),
                     etDescription.text.toString(),
                     saveImageToInternalStorage(),
-                    coinDetected.toDouble(),
+                    coinDetected!!.toDouble(),
                     currentLocation,
                     Calendar.getInstance().time,
                     Calendar.getInstance().time

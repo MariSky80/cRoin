@@ -21,7 +21,10 @@ import android.Manifest
 import android.app.Activity
 import android.app.Fragment
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.hardware.Camera
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
@@ -30,17 +33,28 @@ import android.media.Image.Plane
 import android.media.ImageReader
 import android.media.ImageReader.OnImageAvailableListener
 import android.os.*
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.util.Size
 import android.view.KeyEvent
 import android.view.Surface
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 
 import com.croin.croin.tensorflow.OverlayView
 import com.croin.croin.tensorflow.env.ImageUtils
+import kotlinx.android.synthetic.main.activity_camera.*
 
-abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.PreviewCallback {
+abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.PreviewCallback, View.OnClickListener {
+
+    companion object {
+        private val PERMISSIONS_REQUEST = 1
+
+        private val PERMISSION_CAMERA = Manifest.permission.CAMERA
+        private val PERMISSION_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
+    }
+
     var isDebug = false
         private set
 
@@ -59,6 +73,7 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
     private var imageConverter: Runnable? = null
 
     private var lastPreviewFrame: ByteArray? = null
+    private var lastBitmap: Bitmap? = null
 
 
     protected val screenOrientation: Int
@@ -73,22 +88,27 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
     //private val layoutId: Int =
     protected abstract val desiredPreviewFrameSize: Size
 
+    private var onCaptureListener: ((Bitmap) -> Unit)? = null
+
+
     fun getLuminance(): ByteArray? {
         return yuvBytes[0]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(ImageUtils.TAG, "onCreate " + this)
         super.onCreate(null)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         setContentView(R.layout.activity_camera)
+
+        ibCapture.setOnClickListener(this)
 
         if (hasPermission()) {
             setFragment()
         } else {
             requestPermission()
         }
+
     }
 
     protected fun getRgbBytes(): IntArray? {
@@ -101,7 +121,6 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
      */
     override fun onPreviewFrame(bytes: ByteArray, camera: Camera) {
         if (isProcessingFrame) {
-            Log.w(ImageUtils.TAG, "Dropping frame!")
             return
         }
 
@@ -115,7 +134,6 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
                 onPreviewSizeChosen(Size(previewSize.width, previewSize.height), 90)
             }
         } catch (e: Exception) {
-            Log.e(ImageUtils.TAG, "Exception! ${e.message}")
             return
         }
 
@@ -177,6 +195,7 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
                 isProcessingFrame = false
             }
 
+
             processImage()
         } catch (e: Exception) {
             Log.e(ImageUtils.TAG, "Exception! ${e.message}")
@@ -187,15 +206,14 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
         Trace.endSection()
     }
 
+
     @Synchronized
     public override fun onStart() {
-        Log.d(ImageUtils.TAG, "onStart " + this)
         super.onStart()
     }
 
     @Synchronized
     public override fun onResume() {
-        Log.d(ImageUtils.TAG, "onResume " + this)
         super.onResume()
 
         handlerThread = HandlerThread("inference")
@@ -205,10 +223,7 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
 
     @Synchronized
     public override fun onPause() {
-        Log.d(ImageUtils.TAG, "onPause " + this)
-
         if (!isFinishing) {
-            Log.d(ImageUtils.TAG, "Requesting finish")
             finish()
         }
 
@@ -226,13 +241,11 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
 
     @Synchronized
     public override fun onStop() {
-        Log.d(ImageUtils.TAG, "onStop " + this)
         super.onStop()
     }
 
     @Synchronized
     public override fun onDestroy() {
-        Log.d(ImageUtils.TAG, "onDestroy " + this)
         super.onDestroy()
     }
 
@@ -332,11 +345,12 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
         camera2Fragment.setCamera(cameraId)
         fragment = camera2Fragment
 
-
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit()
+
+
     }
 
     protected fun fillBytes(planes: Array<Plane>, yuvBytes: Array<ByteArray?>) {
@@ -385,12 +399,69 @@ abstract class CameraActivity : Activity(), OnImageAvailableListener, Camera.Pre
 
     protected abstract fun onPreviewSizeChosen(size: Size, rotation: Int)
 
-    companion object {
-        private val PERMISSIONS_REQUEST = 1
+    /**
+     * Overrides onClick from ImageButton listener.
+     * Call the camera function but before asks permissions if needed.
+     *
+     * @param View
+     *
+     */
+    override fun onClick(v: View?) {
+        when (v) {
+            ibCapture -> {
+                lateinit var dialog: AlertDialog
 
-        private val PERMISSION_CAMERA = Manifest.permission.CAMERA
-        private val PERMISSION_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle(getString(R.string.dialog_capture_title))
+                builder.setMessage(getString(R.string.dialog_capture_description))
+
+                val dialogClickListener = DialogInterface.OnClickListener{ _, which ->
+                    when(which){
+                        DialogInterface.BUTTON_POSITIVE -> {
+
+                            lastBitmap?.let {9
+                                val intent = Intent(baseContext, IdentifyActivity::class.java)
+                                intent.addExtra("capture", lastBitmap)
+                                intent.addExtra("detected", 100.25f)
+                                startActivity(intent)
+                            }
+
+                        }
+                    }
+                }
+
+                builder.setPositiveButton(R.string.dialog_yes,dialogClickListener)
+                builder.setNeutralButton(R.string.dialog_cancel,dialogClickListener)
+
+                dialog = builder.create()
+                dialog.show()
+
+
+            }
+        }
     }
+
+
+    /**
+     * Add estra information to activity before startint it.
+     *
+     * @param String key name
+     * @param Any? any value passed like Long, String, Boolean, Float, Double, Int, Parceable, Bitmap, ...
+     */
+    private fun Intent.addExtra(key: String, value: Any?) {
+        when (value) {
+            is Long -> putExtra(key, value)
+            is String -> putExtra(key, value)
+            is Boolean -> putExtra(key, value)
+            is Float -> putExtra(key, value)
+            is Double -> putExtra(key, value)
+            is Int -> putExtra(key, value)
+            is Parcelable -> putExtra(key, value)
+            is Bitmap -> putExtra(key, value)
+            //Add other types when needed
+        }
+    }
+
 }
 
 

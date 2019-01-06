@@ -22,27 +22,29 @@ import android.app.Dialog
 import android.app.DialogFragment
 import android.app.Fragment
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.ImageFormat
-import android.graphics.Matrix
-import android.graphics.RectF
-import android.graphics.SurfaceTexture
+import android.graphics.*
+import android.hardware.Camera
 import android.hardware.camera2.*
 import android.media.ImageReader
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
-import android.text.TextUtils
+import android.os.Parcelable
 import android.util.Log
 import android.util.Size
 import android.util.SparseIntArray
 import android.view.*
+import android.widget.ImageButton
 import android.widget.Toast
 import com.croin.croin.tensorflow.AutoFitTextureView
 import java.util.*
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 import com.croin.croin.tensorflow.env.ImageUtils
+import kotlinx.android.synthetic.main.camera_connection_fragment.*
 
 @SuppressLint("ValidFragment")
 class CameraConnectionFragment : Fragment {
@@ -102,10 +104,6 @@ class CameraConnectionFragment : Fragment {
                 }
             }
 
-            Log.i(ImageUtils.TAG,"Desired size: " + desiredSize + ", min size: " + minSize + "x" + minSize)
-            Log.i(ImageUtils.TAG,"Valid preview sizes: [" + TextUtils.join(", ", bigEnough) + "]")
-            Log.i(ImageUtils.TAG,"Rejected preview sizes: [" + TextUtils.join(", ", tooSmall) + "]")
-
             if (exactSizeFound) {
                 Log.i(ImageUtils.TAG,"Exact size match found.")
                 return desiredSize
@@ -120,6 +118,7 @@ class CameraConnectionFragment : Fragment {
                 return choices[0]
             }
         }
+
     }
 
     private var cameraConnectionCallback: CameraConnectionFragment.ConnectionCallback? = null
@@ -286,7 +285,10 @@ class CameraConnectionFragment : Fragment {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(layout!!, container, false)
+
+        val view: View = inflater!!.inflate(layout!!, container, false)
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
